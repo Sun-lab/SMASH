@@ -1,13 +1,5 @@
-// We can now use the BH package
-// [[Rcpp::depends(BH)]]
-
 #include <RcppArmadillo.h>
 #include <Rcpp.h>
-#include <omp.h>
-#include <Rmath.h>
-#include <cmath>
-#include <boost/algorithm/string/classification.hpp>
-#include <boost/algorithm/string/split.hpp>
 
 // [[Rcpp::depends("RcppArmadillo")]]
 

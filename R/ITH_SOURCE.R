@@ -21,13 +21,9 @@ calc_maf = function(purity,vec_q,mult,tCN,vec_alloc){
 #' @param maxLOCI A positive integer number of simulated somatic variant calls
 #' @export
 #' @examples
-#'		gen_subj_truth(mat_config = eS[[2]][[1]],maxLOCI = 100)
+#' data(eS)
+#' gen_subj_truth(mat_config = eS[[2]][[1]],maxLOCI = 100)
 gen_subj_truth = function(mat_config,maxLOCI,show_thres=FALSE){
-	if(FALSE){
-		mat_config = eS[[5]][[3]]
-		maxLOCI = 100
-		show_thres = TRUE
-	}
 	
 	# Enumerate possible CN states
 	all_CN_states = c()
@@ -146,13 +142,10 @@ gen_subj_truth = function(mat_config,maxLOCI,show_thres=FALSE){
 #' @param RD A positive integer for the mean read depth generated from the negative binomial distribution
 #' @export
 #' @examples
-#'		truth = gen_subj_truth(mat_config = eS[[2]][[1]],maxLOCI = 100)
-#'		gen_ITH_RD(DATA = truth$subj_truth,RD = 100)
+#' data(eS)
+#' truth = gen_subj_truth(mat_config = eS[[2]][[1]],maxLOCI = 100)
+#' gen_ITH_RD(DATA = truth$subj_truth,RD = 100)
 gen_ITH_RD = function(DATA,RD){
-	if(FALSE){
-		DATA = gen_all_A_CN_M[[i]]
-		RD = 100
-	}
 	
 	B = nrow(DATA)
 	while(TRUE){
@@ -310,6 +303,7 @@ ITH_optim = function(my_data,my_purity,init_eS,my_unc_q=NULL,max_iter=4e3,my_eps
 #'		row or model of \code{GRID}.
 #' @export
 #' @examples
+#' data(eS)
 #' set.seed(1); truth = gen_subj_truth(mat_config = eS[[2]][[1]],maxLOCI = 100)
 #' truth[c("purity","q","eta")] # the underlying parameters
 #' obs_data = gen_ITH_RD(DATA = truth$subj_truth,RD = 200)
@@ -317,6 +311,7 @@ ITH_optim = function(my_data,my_purity,init_eS,my_unc_q=NULL,max_iter=4e3,my_eps
 #' opt_out = grid_ITH_optim(my_data = obs_data[,c("tAD","tRD","CN_1","CN_2","tCN")],
 #'		my_purity = truth$purity,list_eS = eS,trials = 50)
 #' opt_out$GRID
+#' opt_out$GRID[order(-opt_out$GRID$BIC),] # sort from best to worst model
 #' opt_out$INFER[[2]][1:5,] # inferred results for the first five somatic variants and second model presented in opt_out$GRID
 grid_ITH_optim = function(my_data,my_purity,list_eS,trials=20,max_iter=4e3,my_epsilon=1e-6){
 	
