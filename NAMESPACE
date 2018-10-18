@@ -1,0 +1,8 @@
+useDynLib(SMASH)
+importFrom(Rcpp, evalCpp)
+
+export(gen_subj_truth)
+export(gen_ITH_RD)
+export(ITH_optim)
+export(grid_ITH_optim)
+
