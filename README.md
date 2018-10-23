@@ -33,7 +33,7 @@ The code below will simulate 200 mutations from a tumor sample with three subclo
 set.seed(2)
 truth = gen_subj_truth(mat_config = eS[[3]][[2]],maxLOCI = 200)
 truth$q 					# cancer cell proportions
-sum(-truth$q*log(truth$q)) 			# entropy
+sum(-truth$q * log(truth$q)) 			# entropy
 table(truth$subj_truth$true_A) 			# frequency of variant allocations
 unique(truth$subj_truth[,c("CN_1","CN_2")])	# unique set of clonal copy numbers
 dat = gen_ITH_RD(DATA = truth$subj_truth,RD = 500)
@@ -52,5 +52,6 @@ smash_out$GRID[order(-smash_out$GRID$BIC),]
 ```
 The R data.frame `smash_out$GRID` contains the clustered results across all feasible subclone configurations provided by the user. Each row denotes a feasible model where columns `cc` and `kk`are used to index the subclone figuration `eS[[cc]][[kk]]`. `ms` denotes the model size or number of parameters estimated for a given model. `LL`, `AIC`, and `BIC` denote the log likelihood, AIC, and BIC of each model, respectively. `q` and `entropy` denote the estimated cancer cell proportions and corresponding entropy calculated as `sum(-q * log(q))`.
 
+`smash_out$INFER` is an R list where each nested element is a data.frame containing the inferred allocation (`infer_A`) and multiplicity (`infer_M`) of each mutation for a given model. To observe the inferred results for the 3rd model or row of `smash_out$GRID`, run `smash_out$INFER[[3]]`
 
 
