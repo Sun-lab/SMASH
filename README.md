@@ -24,7 +24,7 @@ A row vector (0,1,1) indicates that the variant arose in the second subclone and
 A row vector (0,1,0) also indicates that the variant arose in the second sublone but was not passed on the third subclone.
 Lastly, a row vector (0,0,1) indicates the variant arose and is only present in the third subclone. 
 Three subclones can arise from two possible configuration matrices. Let A, B, and C denote the three subclones arising in that order. One possibility is that the three subclones arose linearly, in order words A -> B -> C. A second possibility is that three subclones arose in a branching tree where A -> B and A -> C. In the file ./data/eS.rda, the R list `eS[[3]]` contains the two matrices for the respective subclone configurations. 
-The default matrices provided with `eS` reflect two of our underlying assumptions. First, we assume each tumor sample arose from one clone and second, at at most two subclones arose from a parental subclone.
+The default matrices provided with `eS` reflect two of our underlying assumptions. First, we assume each tumor sample arose from one clone and second, at most two subclones arose from a parental subclone.
 
 ## Simulate and Cluster
 The package is also designed to simulate somatic mutations assuming known tumor purity and clonal copy number per mutation. 
@@ -52,6 +52,6 @@ smash_out$GRID[order(-smash_out$GRID$BIC),]
 ```
 The R data.frame `smash_out$GRID` contains the clustered results across all feasible subclone configurations provided by the user. Each row denotes a feasible model where columns `cc` and `kk`are used to index the subclone figuration `eS[[cc]][[kk]]`. `ms` denotes the model size or number of parameters estimated for a given model. `LL`, `AIC`, and `BIC` denote the log likelihood, AIC, and BIC of each model, respectively. `q` and `entropy` denote the estimated cancer cell proportions and corresponding entropy calculated as `sum(-q * log(q))`.
 
-`smash_out$INFER` is an R list where each nested element is a data.frame containing the inferred allocation (`infer_A`) and multiplicity (`infer_M`) of each mutation for a given model. To observe the inferred results for the 3rd model or row of `smash_out$GRID`, run `smash_out$INFER[[3]]`
+`smash_out$INFER` is an R list where each nested element is a data.frame containing the inferred allocation (`infer_A`) and multiplicity (`infer_M`) of each mutation for a given model. To observe the inferred results for the 3rd model or row of `smash_out$GRID`, run `smash_out$INFER[[3]]`.
 
 
