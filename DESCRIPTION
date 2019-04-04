@@ -12,9 +12,9 @@ Description: Cluster user-supplied somatic read counts
   multiplicity, and allocation.
 License: Unlimited
 Depends: R (>= 3.5.0)
-Imports: Rcpp (>= 0.12.19)
+Imports: Rcpp (>= 0.12.19),
+    RcppArmadillo
 LinkingTo: Rcpp, RcppArmadillo
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.0.1
-
