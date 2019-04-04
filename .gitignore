@@ -1,5 +1,7 @@
 .Rproj.user/
 SMASH.Rproj
 .Rbuildignore
-.RData
+*.RData
 .Rhistory
+*.o
+

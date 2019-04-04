@@ -1,10 +1,17 @@
 #' @importFrom Rcpp sourceCpp
-#' @useDynLib SMASH
+#' @useDynLib gitSMASH
 
-# Functions
+
+#' @title smart_df
+#' @description The data.frame function but with \code{stringsAsFactors = FALSE}
 smart_df = function(...){
 	data.frame(...,stringsAsFactors = FALSE)
 }
+
+#' @title poss_mult
+#' @description Generates all possible multiplicities given a copy number state and subclone allocation number
+#' @param x A vector of two integers representing a copy number state
+#' @param alloc An integer denoting which subclone a variant emerged from
 poss_mult = function(x,alloc){
 	x2 = unique(c(1,x))
 	output = x2[x2 > 0]
@@ -13,19 +20,23 @@ poss_mult = function(x,alloc){
 	}
 	output
 }
+
+#' @title calc_maf
+#' @description Calculates the expected mutant allele frequency of a variant given the tumor purity, subclone proportions, multiplicity, total copy number, and subclone allocation
 calc_maf = function(purity,vec_q,mult,tCN,vec_alloc){
 	purity * mult * sum(vec_q * vec_alloc) /
 		(tCN * purity + 2*(1-purity))
 }
 
+
 #' @title gen_subj_truth
 #' @description Simulates copy number states, multiplicities, allocations
-#' @param mat_config A subclone configuration matrix pre-defined in R list \code{eS}
+#' @param mat_eS A subclone configuration matrix pre-defined in R list \code{eS}
 #' @param maxLOCI A positive integer number of simulated somatic variant calls
 #' @export
 #' @examples
 #' data(eS)
-#' gen_subj_truth(mat_config = eS[[2]][[1]],maxLOCI = 100)
+#' gen_subj_truth(mat_eS = eS[[2]][[1]],maxLOCI = 100)
 gen_subj_truth = function(mat_eS,maxLOCI){
 
   # Enumerate possible CN states
@@ -36,22 +47,22 @@ gen_subj_truth = function(mat_eS,maxLOCI){
     all_CN_states = rbind(all_CN_states,smart_df(tCN=tCN,CN_1=CN_1,CN_2=CN_2))
     rm(CN_1,CN_2)
   }
-  all_CN_states$prob = dgeom(abs(all_CN_states[,2]-1)+abs(all_CN_states[,3]-1),prob=0.45)
+  all_CN_states$prob = stats::dgeom(abs(all_CN_states[,2]-1)+abs(all_CN_states[,3]-1),prob=0.45)
   all_CN_states$prob = all_CN_states$prob / sum(all_CN_states$prob)
   tmp_all_CN_states = all_CN_states[which(all_CN_states$CN_1 == all_CN_states$CN_2),]
   tmp_all_CN_states$prob = tmp_all_CN_states$prob / sum(tmp_all_CN_states$prob)
   
-  true_purity = runif(1,0.2,1)
+  true_purity = stats::runif(1,0.2,1)
   while(TRUE){
     # Generate true_vartheta
-    # true_vartheta = runif(ncol(mat_eS),-3,1)
+    # true_vartheta = stats::runif(ncol(mat_eS),-3,1)
     
     # Calculate eta and purity and q
     # true_eta = vartheta_to_eta(true_vartheta)
     # true_purity = sum(true_eta)
     # true_q = true_eta / true_purity
     
-    true_q = runif(ncol(mat_eS),0,2)
+    true_q = stats::runif(ncol(mat_eS),0,2)
     true_q = true_q / sum(true_q)
     true_eta = true_q * true_purity
     if( ncol(mat_eS) == 1 ) break
@@ -112,8 +123,8 @@ gen_ITH_RD = function(DATA,RD){
 	
 	B = nrow(DATA)
 	while(TRUE){
-		DATA$tDP = rnbinom(B,mu=RD,size=2) + 30
-		DATA$tAD = rbinom(B,DATA$tDP,DATA$true_MAF)
+		DATA$tDP = stats::rnbinom(B,mu=RD,size=2) + 30
+		DATA$tAD = stats::rbinom(B,DATA$tDP,DATA$true_MAF)
 		if(mean(DATA$tAD == 0) < 0.1) break
 	}
 	DATA$tRD = DATA$tDP - DATA$tAD
@@ -212,9 +223,9 @@ ITH_optim = function(my_data,my_purity,init_eS,pi_eps0=NULL,my_unc_q=NULL,max_it
   if( is.null(my_unc_q) ){
     rr = sample(c(0,1),1)
     if(rr == 0){
-      init_unc_q = runif(ncol(init_eS)-1,-3,1)
+      init_unc_q = stats::runif(ncol(init_eS)-1,-3,1)
     } else if(rr == 1){
-      init_unc_q = runif(ncol(init_eS)-1,1,2)
+      init_unc_q = stats::runif(ncol(init_eS)-1,1,2)
     }
   } else {
     init_unc_q = my_unc_q
@@ -280,7 +291,7 @@ ITH_optim = function(my_data,my_purity,init_eS,pi_eps0=NULL,my_unc_q=NULL,max_it
 #' @title grid_ITH_optim
 #' @description This function performs a grid search over enumerated 
 #' 	configurations within the pre-defined list \code{eS}
-#' @inheritDotParams ITH_optim my_data my_purity max_iter my_epsilon
+#' @inheritDotParams ITH_optim my_data my_purity pi_eps0 max_iter my_epsilon
 #' @param list_eS A nested list of subclone configuration matrices
 #' @param trials Positive integer, number of random initializations of subclone proportions
 #' @return A R list containing two objects. \code{GRID} is a data frame 

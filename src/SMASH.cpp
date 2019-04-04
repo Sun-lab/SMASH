@@ -13,12 +13,10 @@ void printR_obj(const T& obj){
 // Intermediate Functions
 // --------------------
 
-// [[Rcpp::export]]
 double Rcpp_norm(const arma::vec& a){
 	return arma::norm(a);
 }
 
-// [[Rcpp::export]]
 double Rcpp_logSumExp(const arma::vec& log_x){
 	if( log_x.n_elem == 1 ){
 		return log_x.at(0);
@@ -34,7 +32,6 @@ double Rcpp_logSumExp(const arma::vec& log_x){
 // Minor ITH functions
 // --------------------
 
-// [[Rcpp::export]]
 arma::vec Rcpp_vartheta_to_eta(const arma::vec& x){
 	if(x.n_elem == 1){
 		return 1.0 / (1.0 + arma::exp(-1.0 * x));
@@ -44,7 +41,6 @@ arma::vec Rcpp_vartheta_to_eta(const arma::vec& x){
 	}
 }
 
-// [[Rcpp::export]]
 arma::vec Rcpp_vartheta_to_qq(const arma::vec& xx){
 	arma::uword num_q = xx.n_elem;
 	arma::vec qq = arma::zeros<arma::vec>(num_q + 1);
@@ -82,8 +78,7 @@ double Rcpp_round(const double& aa,
   const arma::uword& digits){
   
 	double factor = std::pow(10,digits);
-	double out = std::round(aa * factor) / factor;
-	return out;
+  return std::round(aa * factor) / factor;
 }
 
 
