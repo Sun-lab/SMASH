@@ -1,17 +1,7 @@
-#' @importFrom Rcpp sourceCpp
-#' @useDynLib gitSMASH
 
-
-#' @title smart_df
-#' @description The data.frame function but with \code{stringsAsFactors = FALSE}
 smart_df = function(...){
 	data.frame(...,stringsAsFactors = FALSE)
 }
-
-#' @title poss_mult
-#' @description Generates all possible multiplicities given a copy number state and subclone allocation number
-#' @param x A vector of two integers representing a copy number state
-#' @param alloc An integer denoting which subclone a variant emerged from
 poss_mult = function(x,alloc){
 	x2 = unique(c(1,x))
 	output = x2[x2 > 0]
@@ -20,9 +10,6 @@ poss_mult = function(x,alloc){
 	}
 	output
 }
-
-#' @title calc_maf
-#' @description Calculates the expected mutant allele frequency of a variant given the tumor purity, subclone proportions, multiplicity, total copy number, and subclone allocation
 calc_maf = function(purity,vec_q,mult,tCN,vec_alloc){
 	purity * mult * sum(vec_q * vec_alloc) /
 		(tCN * purity + 2*(1-purity))
@@ -33,6 +20,13 @@ calc_maf = function(purity,vec_q,mult,tCN,vec_alloc){
 #' @description Simulates copy number states, multiplicities, allocations
 #' @param mat_eS A subclone configuration matrix pre-defined in R list \code{eS}
 #' @param maxLOCI A positive integer number of simulated somatic variant calls
+#' @return A list containing
+#' \describe{
+#'		\item{subj_truth}{dataframe of each variant's simulated minor (\code{CN_1}) and major (\code{CN_2}) copy number states, total copy number (\code{tCN}), subclone allocation (\code{true_A}), multiplicity (\code{true_M}), mutant allele frequency (\code{true_MAF}), and cellular prevalence (\code{true_CP})}
+#'		\item{purity}{tumor purity}
+#'		\item{eta}{the product of tumor purity and subclone proportions}
+#'		\item{q}{vector of subclone proportions}
+#' }
 #' @export
 #' @examples
 #' data(eS)
@@ -117,7 +111,7 @@ gen_subj_truth = function(mat_eS,maxLOCI){
 #' @export
 #' @examples
 #' data(eS)
-#' truth = gen_subj_truth(mat_config = eS[[2]][[1]],maxLOCI = 100)
+#' truth = gen_subj_truth(mat_eS = eS[[2]][[1]],maxLOCI = 100)
 #' gen_ITH_RD(DATA = truth$subj_truth,RD = 100)
 gen_ITH_RD = function(DATA,RD){
 	
@@ -411,6 +405,10 @@ grid_ITH_optim = function(my_data,my_purity,list_eS,pi_eps0=NULL,trials=20,max_i
   list(GRID = all_ck,INFER = infer_list)
 }
 
+
+#' @importFrom Rcpp sourceCpp
+#' @useDynLib gitSMASH
+NULL
 
 
 ###
