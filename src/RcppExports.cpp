@@ -6,182 +6,35 @@
 
 using namespace Rcpp;
 
-// Rcpp_norm
-double Rcpp_norm(const arma::vec& a);
-RcppExport SEXP _SMASH_Rcpp_norm(SEXP aSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::vec& >::type a(aSEXP);
-    rcpp_result_gen = Rcpp::wrap(Rcpp_norm(a));
-    return rcpp_result_gen;
-END_RCPP
-}
-// Rcpp_logSumExp
-double Rcpp_logSumExp(const arma::vec& log_x);
-RcppExport SEXP _SMASH_Rcpp_logSumExp(SEXP log_xSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::vec& >::type log_x(log_xSEXP);
-    rcpp_result_gen = Rcpp::wrap(Rcpp_logSumExp(log_x));
-    return rcpp_result_gen;
-END_RCPP
-}
-// Rcpp_min_diff
-double Rcpp_min_diff(const arma::vec& x);
-RcppExport SEXP _SMASH_Rcpp_min_diff(SEXP xSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::vec& >::type x(xSEXP);
-    rcpp_result_gen = Rcpp::wrap(Rcpp_min_diff(x));
-    return rcpp_result_gen;
-END_RCPP
-}
-// Rcpp_log_binom_coef
-double Rcpp_log_binom_coef(const double& n, const double& x);
-RcppExport SEXP _SMASH_Rcpp_log_binom_coef(SEXP nSEXP, SEXP xSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const double& >::type n(nSEXP);
-    Rcpp::traits::input_parameter< const double& >::type x(xSEXP);
-    rcpp_result_gen = Rcpp::wrap(Rcpp_log_binom_coef(n, x));
-    return rcpp_result_gen;
-END_RCPP
-}
-// Rcpp_vartheta_to_eta
-arma::vec Rcpp_vartheta_to_eta(const arma::vec& x);
-RcppExport SEXP _SMASH_Rcpp_vartheta_to_eta(SEXP xSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::vec& >::type x(xSEXP);
-    rcpp_result_gen = Rcpp::wrap(Rcpp_vartheta_to_eta(x));
-    return rcpp_result_gen;
-END_RCPP
-}
-// Rcpp_vartheta_to_qq
-arma::vec Rcpp_vartheta_to_qq(const arma::vec& xx);
-RcppExport SEXP _SMASH_Rcpp_vartheta_to_qq(SEXP xxSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::vec& >::type xx(xxSEXP);
-    rcpp_result_gen = Rcpp::wrap(Rcpp_vartheta_to_qq(xx));
-    return rcpp_result_gen;
-END_RCPP
-}
-// Rcpp_ITH_obsLL_Z
-double Rcpp_ITH_obsLL_Z(const arma::mat& RD, arma::mat& ZZ, const arma::mat& uniq_CN_MA, const arma::mat& BB, const arma::vec& pi, const arma::mat& eS, const double& purity, const arma::vec& qq);
-RcppExport SEXP _SMASH_Rcpp_ITH_obsLL_Z(SEXP RDSEXP, SEXP ZZSEXP, SEXP uniq_CN_MASEXP, SEXP BBSEXP, SEXP piSEXP, SEXP eSSEXP, SEXP puritySEXP, SEXP qqSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::mat& >::type RD(RDSEXP);
-    Rcpp::traits::input_parameter< arma::mat& >::type ZZ(ZZSEXP);
-    Rcpp::traits::input_parameter< const arma::mat& >::type uniq_CN_MA(uniq_CN_MASEXP);
-    Rcpp::traits::input_parameter< const arma::mat& >::type BB(BBSEXP);
-    Rcpp::traits::input_parameter< const arma::vec& >::type pi(piSEXP);
-    Rcpp::traits::input_parameter< const arma::mat& >::type eS(eSSEXP);
-    Rcpp::traits::input_parameter< const double& >::type purity(puritySEXP);
-    Rcpp::traits::input_parameter< const arma::vec& >::type qq(qqSEXP);
-    rcpp_result_gen = Rcpp::wrap(Rcpp_ITH_obsLL_Z(RD, ZZ, uniq_CN_MA, BB, pi, eS, purity, qq));
-    return rcpp_result_gen;
-END_RCPP
-}
-// Rcpp_ITH_compLL
-double Rcpp_ITH_compLL(const arma::mat& RD, const arma::mat& ZZ, const arma::mat& uniq_CN_MA, const arma::vec& pi, const arma::mat& eS, const double& purity, const arma::vec& qq);
-RcppExport SEXP _SMASH_Rcpp_ITH_compLL(SEXP RDSEXP, SEXP ZZSEXP, SEXP uniq_CN_MASEXP, SEXP piSEXP, SEXP eSSEXP, SEXP puritySEXP, SEXP qqSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::mat& >::type RD(RDSEXP);
-    Rcpp::traits::input_parameter< const arma::mat& >::type ZZ(ZZSEXP);
-    Rcpp::traits::input_parameter< const arma::mat& >::type uniq_CN_MA(uniq_CN_MASEXP);
-    Rcpp::traits::input_parameter< const arma::vec& >::type pi(piSEXP);
-    Rcpp::traits::input_parameter< const arma::mat& >::type eS(eSSEXP);
-    Rcpp::traits::input_parameter< const double& >::type purity(puritySEXP);
-    Rcpp::traits::input_parameter< const arma::vec& >::type qq(qqSEXP);
-    rcpp_result_gen = Rcpp::wrap(Rcpp_ITH_compLL(RD, ZZ, uniq_CN_MA, pi, eS, purity, qq));
-    return rcpp_result_gen;
-END_RCPP
-}
-// Rcpp_ITH_compGRAD
-arma::vec Rcpp_ITH_compGRAD(const arma::mat& RD, const arma::mat& ZZ, const arma::mat& uniq_CN_MA, const arma::mat& eS, const double& purity, const arma::vec& qq, const arma::vec& tCN);
-RcppExport SEXP _SMASH_Rcpp_ITH_compGRAD(SEXP RDSEXP, SEXP ZZSEXP, SEXP uniq_CN_MASEXP, SEXP eSSEXP, SEXP puritySEXP, SEXP qqSEXP, SEXP tCNSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::mat& >::type RD(RDSEXP);
-    Rcpp::traits::input_parameter< const arma::mat& >::type ZZ(ZZSEXP);
-    Rcpp::traits::input_parameter< const arma::mat& >::type uniq_CN_MA(uniq_CN_MASEXP);
-    Rcpp::traits::input_parameter< const arma::mat& >::type eS(eSSEXP);
-    Rcpp::traits::input_parameter< const double& >::type purity(puritySEXP);
-    Rcpp::traits::input_parameter< const arma::vec& >::type qq(qqSEXP);
-    Rcpp::traits::input_parameter< const arma::vec& >::type tCN(tCNSEXP);
-    rcpp_result_gen = Rcpp::wrap(Rcpp_ITH_compGRAD(RD, ZZ, uniq_CN_MA, eS, purity, qq, tCN));
-    return rcpp_result_gen;
-END_RCPP
-}
-// Rcpp_ITH_Mstep_BFGS
-void Rcpp_ITH_Mstep_BFGS(const arma::mat& RD, const arma::mat& ZZ, const arma::mat& uniq_CN_MA, const arma::vec& pi, const arma::mat& eS, const double& purity, const arma::vec& tCN, const arma::vec& params0, arma::vec& qq, const arma::uword& max_iter, const double& eps, const bool& show);
-RcppExport SEXP _SMASH_Rcpp_ITH_Mstep_BFGS(SEXP RDSEXP, SEXP ZZSEXP, SEXP uniq_CN_MASEXP, SEXP piSEXP, SEXP eSSEXP, SEXP puritySEXP, SEXP tCNSEXP, SEXP params0SEXP, SEXP qqSEXP, SEXP max_iterSEXP, SEXP epsSEXP, SEXP showSEXP) {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::mat& >::type RD(RDSEXP);
-    Rcpp::traits::input_parameter< const arma::mat& >::type ZZ(ZZSEXP);
-    Rcpp::traits::input_parameter< const arma::mat& >::type uniq_CN_MA(uniq_CN_MASEXP);
-    Rcpp::traits::input_parameter< const arma::vec& >::type pi(piSEXP);
-    Rcpp::traits::input_parameter< const arma::mat& >::type eS(eSSEXP);
-    Rcpp::traits::input_parameter< const double& >::type purity(puritySEXP);
-    Rcpp::traits::input_parameter< const arma::vec& >::type tCN(tCNSEXP);
-    Rcpp::traits::input_parameter< const arma::vec& >::type params0(params0SEXP);
-    Rcpp::traits::input_parameter< arma::vec& >::type qq(qqSEXP);
-    Rcpp::traits::input_parameter< const arma::uword& >::type max_iter(max_iterSEXP);
-    Rcpp::traits::input_parameter< const double& >::type eps(epsSEXP);
-    Rcpp::traits::input_parameter< const bool& >::type show(showSEXP);
-    Rcpp_ITH_Mstep_BFGS(RD, ZZ, uniq_CN_MA, pi, eS, purity, tCN, params0, qq, max_iter, eps, show);
-    return R_NilValue;
-END_RCPP
-}
 // Rcpp_ITH_opt
-Rcpp::List Rcpp_ITH_opt(const arma::mat& RD, const arma::mat& BB, const arma::umat& uniq_BB, const arma::mat& uniq_CN_MA, const arma::mat& eS, const double& purity, const arma::vec& tCN, const arma::vec& pi0, const arma::vec& unc_qq0, const bool& mstep, const arma::uword& max_iter, const double& eps, const bool& show);
-RcppExport SEXP _SMASH_Rcpp_ITH_opt(SEXP RDSEXP, SEXP BBSEXP, SEXP uniq_BBSEXP, SEXP uniq_CN_MASEXP, SEXP eSSEXP, SEXP puritySEXP, SEXP tCNSEXP, SEXP pi0SEXP, SEXP unc_qq0SEXP, SEXP mstepSEXP, SEXP max_iterSEXP, SEXP epsSEXP, SEXP showSEXP) {
+Rcpp::List Rcpp_ITH_opt(const arma::mat& RD, const arma::vec& log_DP, const arma::vec& LBC, const arma::mat& BB, const arma::umat& uniq_BB, const arma::mat& uniq_CN_MA, const arma::mat& eS, const double& purity, const arma::vec& tCN, const double& pi_eps0, const arma::vec& pi0, const arma::vec& unc_qq0, const bool& mstep, const arma::uword& max_iter, const double& eps, const bool& show);
+RcppExport SEXP _SMASH_Rcpp_ITH_opt(SEXP RDSEXP, SEXP log_DPSEXP, SEXP LBCSEXP, SEXP BBSEXP, SEXP uniq_BBSEXP, SEXP uniq_CN_MASEXP, SEXP eSSEXP, SEXP puritySEXP, SEXP tCNSEXP, SEXP pi_eps0SEXP, SEXP pi0SEXP, SEXP unc_qq0SEXP, SEXP mstepSEXP, SEXP max_iterSEXP, SEXP epsSEXP, SEXP showSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const arma::mat& >::type RD(RDSEXP);
+    Rcpp::traits::input_parameter< const arma::vec& >::type log_DP(log_DPSEXP);
+    Rcpp::traits::input_parameter< const arma::vec& >::type LBC(LBCSEXP);
     Rcpp::traits::input_parameter< const arma::mat& >::type BB(BBSEXP);
     Rcpp::traits::input_parameter< const arma::umat& >::type uniq_BB(uniq_BBSEXP);
     Rcpp::traits::input_parameter< const arma::mat& >::type uniq_CN_MA(uniq_CN_MASEXP);
     Rcpp::traits::input_parameter< const arma::mat& >::type eS(eSSEXP);
     Rcpp::traits::input_parameter< const double& >::type purity(puritySEXP);
     Rcpp::traits::input_parameter< const arma::vec& >::type tCN(tCNSEXP);
+    Rcpp::traits::input_parameter< const double& >::type pi_eps0(pi_eps0SEXP);
     Rcpp::traits::input_parameter< const arma::vec& >::type pi0(pi0SEXP);
     Rcpp::traits::input_parameter< const arma::vec& >::type unc_qq0(unc_qq0SEXP);
     Rcpp::traits::input_parameter< const bool& >::type mstep(mstepSEXP);
     Rcpp::traits::input_parameter< const arma::uword& >::type max_iter(max_iterSEXP);
     Rcpp::traits::input_parameter< const double& >::type eps(epsSEXP);
     Rcpp::traits::input_parameter< const bool& >::type show(showSEXP);
-    rcpp_result_gen = Rcpp::wrap(Rcpp_ITH_opt(RD, BB, uniq_BB, uniq_CN_MA, eS, purity, tCN, pi0, unc_qq0, mstep, max_iter, eps, show));
+    rcpp_result_gen = Rcpp::wrap(Rcpp_ITH_opt(RD, log_DP, LBC, BB, uniq_BB, uniq_CN_MA, eS, purity, tCN, pi_eps0, pi0, unc_qq0, mstep, max_iter, eps, show));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_SMASH_Rcpp_norm", (DL_FUNC) &_SMASH_Rcpp_norm, 1},
-    {"_SMASH_Rcpp_logSumExp", (DL_FUNC) &_SMASH_Rcpp_logSumExp, 1},
-    {"_SMASH_Rcpp_min_diff", (DL_FUNC) &_SMASH_Rcpp_min_diff, 1},
-    {"_SMASH_Rcpp_log_binom_coef", (DL_FUNC) &_SMASH_Rcpp_log_binom_coef, 2},
-    {"_SMASH_Rcpp_vartheta_to_eta", (DL_FUNC) &_SMASH_Rcpp_vartheta_to_eta, 1},
-    {"_SMASH_Rcpp_vartheta_to_qq", (DL_FUNC) &_SMASH_Rcpp_vartheta_to_qq, 1},
-    {"_SMASH_Rcpp_ITH_obsLL_Z", (DL_FUNC) &_SMASH_Rcpp_ITH_obsLL_Z, 8},
-    {"_SMASH_Rcpp_ITH_compLL", (DL_FUNC) &_SMASH_Rcpp_ITH_compLL, 7},
-    {"_SMASH_Rcpp_ITH_compGRAD", (DL_FUNC) &_SMASH_Rcpp_ITH_compGRAD, 7},
-    {"_SMASH_Rcpp_ITH_Mstep_BFGS", (DL_FUNC) &_SMASH_Rcpp_ITH_Mstep_BFGS, 12},
-    {"_SMASH_Rcpp_ITH_opt", (DL_FUNC) &_SMASH_Rcpp_ITH_opt, 13},
+    {"_SMASH_Rcpp_ITH_opt", (DL_FUNC) &_SMASH_Rcpp_ITH_opt, 16},
     {NULL, NULL, 0}
 };
 

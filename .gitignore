@@ -3,5 +3,7 @@ SMASH.Rproj
 .Rbuildignore
 *.RData
 .Rhistory
-src/*.o
+*.o
+*.dll
+src/Makevar*
 
