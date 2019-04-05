@@ -5,5 +5,4 @@ SMASH.Rproj
 .Rhistory
 *.o
 *.dll
-src/Makevar*
 
