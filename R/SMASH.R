@@ -1,4 +1,4 @@
-
+# Minor Functions
 smart_df = function(...){
 	data.frame(...,stringsAsFactors = FALSE)
 }
@@ -15,19 +15,25 @@ calc_maf = function(purity,vec_q,mult,tCN,vec_alloc){
 		(tCN * purity + 2*(1-purity))
 }
 
+#' A collection of pre-defined subclone configurations.
+#' 
+#' A R list containing subclone configurations in matrix form for 1 to 5 subclones. For each matrix, each column corresponds to a subclone and each row corresponds to a variant's allocation across all subclones. For example, the first row of each matrix is a vector of 1's to represent clonal variants, variants present in all subclones.
+#'
+"eS"
 
 #' @title gen_subj_truth
 #' @description Simulates copy number states, multiplicities, allocations
 #' @param mat_eS A subclone configuration matrix pre-defined in R list \code{eS}
 #' @param maxLOCI A positive integer number of simulated somatic variant calls
-#' @return A list containing
+#' @return A list containing the following components:
 #' \describe{
-#'		\item{subj_truth}{dataframe of each variant's simulated minor (\code{CN_1}) and major (\code{CN_2}) copy number states, total copy number (\code{tCN}), subclone allocation (\code{true_A}), multiplicity (\code{true_M}), mutant allele frequency (\code{true_MAF}), and cellular prevalence (\code{true_CP})}
-#'		\item{purity}{tumor purity}
-#'		\item{eta}{the product of tumor purity and subclone proportions}
-#'		\item{q}{vector of subclone proportions}
+#' \item{\code{subj_truth}}{dataframe of each variant's simulated minor (\code{CN_1}) and major (\code{CN_2}) copy number states, total copy number (\code{tCN}), subclone allocation (\code{true_A}), multiplicity (\code{true_M}), mutant allele frequency (\code{true_MAF}), and cellular prevalence (\code{true_CP})}
+#' \item{\code{purity}}{tumor purity}
+#' \item{\code{eta}}{the product of tumor purity and subclone proportions}
+#' \item{\code{q}}{vector of subclone proportions}
 #' }
 #' @export
+#' 
 #' @examples
 #' data(eS)
 #' gen_subj_truth(mat_eS = eS[[2]][[1]],maxLOCI = 100)
@@ -108,7 +114,9 @@ gen_subj_truth = function(mat_eS,maxLOCI){
 #' @description Simulates observed alternate and reference read counts
 #' @param DATA The output data.frame from \code{gen_subj_truth} 
 #' @param RD A positive integer for the mean read depth generated from the negative binomial distribution
+#' @return A matrix of simulated alternate and reference read counts.
 #' @export
+#' 
 #' @examples
 #' data(eS)
 #' truth = gen_subj_truth(mat_eS = eS[[2]][[1]],maxLOCI = 100)
@@ -117,8 +125,8 @@ gen_ITH_RD = function(DATA,RD){
 	
 	B = nrow(DATA)
 	while(TRUE){
-		DATA$tDP = stats::rnbinom(B,mu=RD,size=2) + 30
-		DATA$tAD = stats::rbinom(B,DATA$tDP,DATA$true_MAF)
+		DATA$tDP = stats::rnbinom(n = B,mu = RD,size = 2) + 30
+		DATA$tAD = stats::rbinom(n = B,size = DATA$tDP,prob = DATA$true_MAF)
 		if(mean(DATA$tAD == 0) < 0.1) break
 	}
 	DATA$tRD = DATA$tDP - DATA$tAD
@@ -129,46 +137,37 @@ gen_ITH_RD = function(DATA,RD){
 # Clustering read counts
 #' @title ITH_optim
 #' @description Performs EM algorithm for a given configuration matrix
-#' @param my_data An R data frame containing columns
-#' \enumerate{
-#'		\item \code{tAD}, tumor alternate read counts
-#'		\item \code{tRD}, tumor reference read counts
-#'		\item \code{CN_1}, minor allele count
-#'		\item \code{CN_2}, major allele count, where \code{CN_1} <= \code{CN_2}
-#'		\item \code{tCN} = \code{CN_1 + CN_2}
+#' @param my_data A R dataframe containing the following columns:
+#' \describe{
+#' \item{\code{tAD}}{tumor alternate read counts}
+#' \item{\code{tRD}}{tumor reference read counts}
+#' \item{\code{CN_1}}{minor allele count}
+#' \item{\code{CN_2}}{major allele count, where \code{CN_1 <= CN_2}}
+#' \item{\code{tCN}}{\code{CN_1 + CN_2}}
 #' }
 #' @param my_purity A single numeric value of known/estimated purity
 #' @param init_eS A subclone configuration matrix pre-defined in R list \code{eS}
-#' @param pi_eps0 A user-specified parameter denoting the proportion of loci
-#'		not explained by the combinations of purity, copy number, multiplicity, 
-#'		and allocation. If \code{NULL}, it is initialized at 1e-3. If set to 0.0,
-#'		the parameter is not estimated.
-#' @param my_unc_q An optimal initial vector for the unconstrained \code{q} vector, 
-#'		useful after running \code{grid_ITH_optim}. If this variable is \code{NULL},
-#'		then the subclone proportions, \code{q}, are randomly generated.
-#' @param max_iter Positive integer, preferably 1000 or more, setting the 
-#'	maximum number of iterations
-#' @param my_epsilon Convergence criterion threshold for changes in the log 
-#'	likelihood, preferably 1e-6 or smaller
+#' @param pi_eps0 A user-specified parameter denoting the proportion of loci not explained by the combinations of purity, copy number, multiplicity, and allocation. If \code{NULL}, it is initialized at 1e-3. If set to 0.0, the parameter is not estimated.
+#' @param my_unc_q An optimal initial vector for the unconstrained \code{q} vector, useful after running \code{grid_ITH_optim}. If this variable is \code{NULL}, then the subclone proportions, \code{q}, are randomly initialized. For instance, if \code{my_unc_q = ( x1 , x2 )}, then \code{q = ( exp(x1) / (1 + exp(x1) + exp(x2)) , exp(x2) / (1 + exp(x1) + exp(x2)) , 1 / (1 + exp(x1) + exp(x2))}.
+#' @param max_iter Positive integer, preferably 1000 or more, setting the maximum number of iterations
+#' @param my_epsilon Convergence criterion threshold for changes in the log likelihood, preferably 1e-6 or smaller
 #' @return If the EM algorithm converges, the output will be a list containing
-#' \itemize{
-#'		\item \code{iter}, number of iterations
-#'		\item \code{converge}, convergence status
-#'		\item \code{unc_q0}, initial unconstrained subclone proportions parameter
-#'		\item \code{unc_q}, unconstrained estimate of \code{q}
-#'		\item \code{q}, estimated subclone proportions among cancer cells
-#'		\item \code{CN_MA_pi}, estimated mixture probabilities of 
-#'			multiplicities and allocations given copy number states
-#'		\item \code{eta}, estimated subclone proportion among tumor cells
-#'		\item \code{purity}, user-inputted tumor purity
-#'		\item \code{entropy}, estimated entropy
-#'		\item \code{infer}, R data frame of inferred variant allocations 
-#'			\code{infer_A}, multiplicities \code{infer_M}, cellular prevalences \code{infer_CP}
-#'		\item \code{ms}, model size, number of parameters within parameter space
-#'		\item \code{LL}, observed log likelihood evaluated at maximal estimates
-#'		\item \code{AIC = 2 * LL - 2 * ms}, Negative AIC, used for model selection
-#'		\item \code{BIC = 2 * LL - ms * log(LOCI)}, Negative BIC, used for model selection
-#'		\item \code{LOCI}, number of inputted somatic variants
+#' \describe{
+#' \item{\code{iter}}{number of iterations}
+#' \item{\code{converge}}{convergence status}
+#' \item{\code{unc_q0}}{initial unconstrained subclone proportions parameter}
+#' \item{\code{unc_q}}{unconstrained estimate of \code{q}}
+#' \item{\code{q}}{estimated subclone proportions among cancer cells}
+#' \item{\code{CN_MA_pi}}{estimated mixture probabilities of multiplicities and allocations given copy number states}
+#' \item{\code{eta}}{estimated subclone proportion among tumor cells}
+#' \item{\code{purity}}{user-inputted tumor purity}
+#' \item{\code{entropy}}{estimated entropy}
+#' \item{\code{infer}}{A R dataframe containing inferred variant allocations (\code{infer_A}), multiplicities (\code{infer_M}), cellular prevalences (\code{infer_CP}).}
+#' \item{\code{ms}}{model size, number of parameters within parameter space}
+#' \item{\code{LL}}{The observed log likelihood evaluated at maximum likelihood estimates.}
+#' \item{\code{AIC = 2 * LL - 2 * ms}}{Negative AIC, used for model selection}
+#' \item{\code{BIC = 2 * LL - ms * log(LOCI)}}{Negative BIC, used for model selection}
+#' \item{\code{LOCI}}{The number of inputted somatic variants.}
 #' }
 #' @export
 ITH_optim = function(my_data,my_purity,init_eS,pi_eps0=NULL,my_unc_q=NULL,max_iter=4e3,my_epsilon=1e-6){
@@ -179,9 +178,20 @@ ITH_optim = function(my_data,my_purity,init_eS,pi_eps0=NULL,my_unc_q=NULL,max_it
   req_vars = c("tCN","CN_1","CN_2","tAD","tRD")
   miss_vars = req_vars[!req_vars %in% names(my_data)]
   if( length(miss_vars) > 0 ){
-    stop(paste0(paste(miss_vars,collapse=", "),"are missing from my_data"))
+		stop(paste0("The following columns are missing from my_data: ",paste(miss_vars,collapse=", ")))
   }
-  
+  if( min(my_data$tAD) <= 0 ){
+		stop("Input variants with positive integer alternate read counts")
+	}
+	if( !all(my_data$tAD == round(my_data$tAD)) || !all(my_data$tRD == round(my_data$tRD)) 
+			|| !all(my_data$tCN == round(my_data$tCN)) || !all(my_data$CN_1 == round(my_data$CN_1))
+			|| !all(my_data$CN_2 == round(my_data$CN_2)) ){
+		stop("Alternate and reference read counts, total, minor, and major copy numbers should all be integers.")
+	}
+	if( my_purity <= 0 || my_purity >= 1 ){
+		stop("Tumor purity should be strictly between 0 and 1.")
+	}
+	
   # Calculate some fixed values
   my_data$tDP = rowSums(my_data[,c("tAD","tRD")])
   my_data$log_DP = log(my_data$tDP)
@@ -288,13 +298,9 @@ ITH_optim = function(my_data,my_purity,init_eS,pi_eps0=NULL,my_unc_q=NULL,max_it
 #' @inheritDotParams ITH_optim my_data my_purity pi_eps0 max_iter my_epsilon
 #' @param list_eS A nested list of subclone configuration matrices
 #' @param trials Positive integer, number of random initializations of subclone proportions
-#' @return A R list containing two objects. \code{GRID} is a data frame 
-#'		where each row denotes a feasible subclone configuration with 
-#'		corresponding subclone proportion estimates \code{q}
-#'		and somatic variant allocations \code{alloc}. \code{INFER} 
-#'		is a list where \code{INFER[[i]]} corresponds to the i-th 
-#'		row or model of \code{GRID}.
+#' @return A R list containing two objects. \code{GRID} is a dataframe where each row denotes a feasible subclone configuration with corresponding subclone proportion estimates \code{q} and somatic variant allocations \code{alloc}. \code{INFER} is a list where \code{INFER[[i]]} corresponds to the \code{i}-th row or model of \code{GRID}.
 #' @export
+#' 
 #' @examples
 #' data(eS)
 #' set.seed(1); truth = gen_subj_truth(mat_eS = eS[[2]][[1]],maxLOCI = 100)
@@ -407,7 +413,7 @@ grid_ITH_optim = function(my_data,my_purity,list_eS,pi_eps0=NULL,trials=20,max_i
 
 
 #' @importFrom Rcpp sourceCpp
-#' @useDynLib gitSMASH
+#' @useDynLib SMASH
 NULL
 
 

@@ -3,5 +3,5 @@ SMASH.Rproj
 .Rbuildignore
 *.RData
 .Rhistory
-*.o
+src/*.o
 
