@@ -35,11 +35,11 @@ dat[1:10,]
 With the code below, we cluster these simulated mutations by supplying all proposed subclone configurations contained in `eS` and run 50 initial randomizations of cancer cell proportions for each configuration.
 ```
 smash_out = grid_ITH_optim(my_data = dat[,c("tAD","tRD","CN_1","CN_2","tCN")],
-													my_purity = truth$purity,
-													list_eS = eS,
-													trials = 50,
-													max_iter = 4e3,
-													my_epsilon = 1e-6)
+		my_purity = truth$purity,
+		list_eS = eS,
+		trials = 50,
+		max_iter = 4e3,
+		my_epsilon = 1e-6)
 smash_out$GRID[order(-smash_out$GRID$BIC),]
 ```
 
