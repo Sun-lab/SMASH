@@ -30,7 +30,7 @@ dat = data.frame(dat,truth$subj_truth,stringsAsFactors = FALSE)
 dat[1:10,]
 ```
 
-`truth$purity` contains the simulated tumor purity. `tAD` and `tRD` denote the tumor variant's alternate and reference read count, respectively. `CN_` and `CN_2` denote the variant's corresponding minor and major allelic copy numbers, respectively. `tCN` denotes the total copy number, the sum of `CN_1` and `CN_2`.
+`truth$purity` contains the simulated tumor purity. `tAD` and `tRD` denote the tumor variant's alternate and reference read count, respectively. `CN_1` and `CN_2` denote the variant's corresponding minor and major allelic copy numbers, respectively. `tCN` denotes the total copy number, the sum of `CN_1` and `CN_2`.
 
 With the code below, we cluster these simulated mutations by supplying all proposed subclone configurations contained in `eS` and run 50 initial randomizations of cancer cell proportions for each configuration.
 ```
