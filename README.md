@@ -49,6 +49,6 @@ The R data.frame `smash_out$GRID` contains the clustered results across all feas
 
 `smash_out$INFER` is a R list where each nested element is a data.frame containing the inferred allocation (`infer_A`) and multiplicity (`infer_M`) of each mutation for a given model. To observe the inferred results for the 3rd model or row of `smash_out$GRID`, run `smash_out$INFER[[3]]`.
 
-# Citation
+## Citation
 
 Little, P., Lin, D.Y., Sun, W. (2019). Associating somatic mutations to clinical outcomes: a pan-cancer study of survival time. *Genome medicine,* 11(1), 1-15. [[HTML](https://genomemedicine.biomedcentral.com/articles/10.1186/s13073-019-0643-9), [PDF](https://genomemedicine.biomedcentral.com/track/pdf/10.1186/s13073-019-0643-9.pdf)]
