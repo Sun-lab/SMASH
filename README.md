@@ -3,7 +3,8 @@
 This package is designed to cluster somatic mutations called from a tumor sample with a matched normal sample. Each mutation is assumed to lie in a genomic segment of clonal copy number. Each mutation's inferred clonal copy number and the tumor purity estimate is required as input to successfully run the program. This information can be obtained by running algorithms such as ABSOLUTE or ASCAT that derive tumor purity and clonal copy number estimates from SNP Array intensities.
 
 ## Installation
-```
+
+```R
 library(devtools)
 install_github("Sun-lab/SMASH")
 ```
@@ -18,7 +19,7 @@ Three subclones can arise from two possible configuration matrices. Let A, B, an
 ## Simulate and Cluster
 The package is also designed to simulate somatic mutations assuming known tumor purity and clonal copy number per mutation. The code below will simulate 200 mutations from a tumor sample with three subclones evolving from a branching tree (`eS[[3]][[2]]`) with a mean sequencing depth of 500.
 
-```
+```R
 set.seed(2)
 truth = gen_subj_truth(mat_eS = eS[[3]][[2]],maxLOCI = 200)
 truth$q # cancer cell proportions
@@ -33,7 +34,8 @@ dat[1:10,]
 `truth$purity` contains the simulated tumor purity. `tAD` and `tRD` denote the tumor variant's alternate and reference read count, respectively. `CN_1` and `CN_2` denote the variant's corresponding minor and major allelic copy numbers, respectively. `tCN` denotes the total copy number, the sum of `CN_1` and `CN_2`.
 
 With the code below, we cluster these simulated mutations by supplying all proposed subclone configurations contained in `eS` and run 50 initial randomizations of cancer cell proportions for each configuration.
-```
+
+```R
 smash_out = grid_ITH_optim(my_data = dat[,c("tAD","tRD","CN_1","CN_2","tCN")],
 		my_purity = truth$purity,
 		list_eS = eS,
@@ -47,4 +49,6 @@ The R data.frame `smash_out$GRID` contains the clustered results across all feas
 
 `smash_out$INFER` is a R list where each nested element is a data.frame containing the inferred allocation (`infer_A`) and multiplicity (`infer_M`) of each mutation for a given model. To observe the inferred results for the 3rd model or row of `smash_out$GRID`, run `smash_out$INFER[[3]]`.
 
+# Citation
 
+Little, P., Lin, D.Y., Sun, W. (2019). Associating somatic mutations to clinical outcomes: a pan-cancer study of survival time. *Genome medicine,* 11(1), 1-15. [[HTML](https://genomemedicine.biomedcentral.com/articles/10.1186/s13073-019-0643-9), [PDF](https://genomemedicine.biomedcentral.com/track/pdf/10.1186/s13073-019-0643-9.pdf)]
