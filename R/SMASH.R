@@ -1,7 +1,4 @@
 # Minor Functions
-smart_df = function(...){
-	data.frame(...,stringsAsFactors = FALSE)
-}
 poss_mult = function(x,alloc){
 	x2 = unique(c(1,x))
 	output = x2[x2 > 0]
@@ -295,7 +292,7 @@ ITH_optim = function(my_data,my_purity,init_eS,pi_eps0=NULL,my_unc_q=NULL,max_it
 #' @title grid_ITH_optim
 #' @description This function performs a grid search over enumerated 
 #' 	configurations within the pre-defined list \code{eS}
-#' @inheritDotParams ITH_optim my_data my_purity pi_eps0 max_iter my_epsilon
+#' @inheritParams ITH_optim
 #' @param list_eS A nested list of subclone configuration matrices
 #' @param trials Positive integer, number of random initializations of subclone proportions
 #' @return A R list containing two objects. \code{GRID} is a dataframe where each row denotes a feasible subclone configuration with corresponding subclone proportion estimates \code{q} and somatic variant allocations \code{alloc}. \code{INFER} is a list where \code{INFER[[i]]} corresponds to the \code{i}-th row or model of \code{GRID}.
@@ -306,7 +303,7 @@ ITH_optim = function(my_data,my_purity,init_eS,pi_eps0=NULL,my_unc_q=NULL,max_it
 #' set.seed(1); truth = gen_subj_truth(mat_eS = eS[[2]][[1]],maxLOCI = 100)
 #' truth[c("purity","q","eta")] # the underlying parameters
 #' obs_data = gen_ITH_RD(DATA = truth$subj_truth,RD = 200)
-#' obs_data = data.frame(obs_data,truth$subj_truth,stringsAsFactors=FALSE)
+#' obs_data = data.frame(obs_data,truth$subj_truth,stringsAsFactors = FALSE)
 #' opt_out = grid_ITH_optim(my_data = obs_data[,c("tAD","tRD","CN_1","CN_2","tCN")],
 #'		my_purity = truth$purity,list_eS = eS,trials = 50)
 #' opt_out$GRID
@@ -411,10 +408,23 @@ grid_ITH_optim = function(my_data,my_purity,list_eS,pi_eps0=NULL,trials=20,max_i
   list(GRID = all_ck,INFER = infer_list)
 }
 
-
+#' @importFrom smartr smart_df
 #' @importFrom Rcpp sourceCpp
 #' @useDynLib SMASH
 NULL
+
+# Steps to create/check/install package from directory
+# bb = strsplit(getwd(),"/")[[1]]; pack_dir = paste(bb[-length(bb)],collapse = "/")
+# pack = strsplit(pack_dir,"/")[[1]]; pack = pack[length(pack)]; pack
+# if( pack %in% installed.packages()[,1] ){ remove.packages(pack); q("no")}
+# Rcpp::compileAttributes(pkgdir = pack_dir)
+# devtools::document(pkg = pack_dir); usethis::use_gpl3_license()
+# Sys.setenv("RSTUDIO_PANDOC" = "C:/Program Files/RStudio/bin/pandoc")
+# check_pandoc = rmarkdown::pandoc_available(); check_pandoc
+#### usethis::use_vignette(name = "test",title = "Testing")
+# make_vign = !TRUE
+# devtools::check(pkg = pack_dir,manual = TRUE,cran = !FALSE,error_on = c("warning","note")[2],vignettes = make_vign)
+# devtools::install(pack_dir,build_vignettes = make_vign)
 
 
 ###

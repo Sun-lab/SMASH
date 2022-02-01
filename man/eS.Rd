@@ -4,7 +4,9 @@
 \name{eS}
 \alias{eS}
 \title{A collection of pre-defined subclone configurations.}
-\format{An object of class \code{list} of length 5.}
+\format{
+An object of class \code{list} of length 5.
+}
 \usage{
 eS
 }

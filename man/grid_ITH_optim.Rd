@@ -4,17 +4,18 @@
 \alias{grid_ITH_optim}
 \title{grid_ITH_optim}
 \usage{
-grid_ITH_optim(my_data, my_purity, list_eS, pi_eps0 = NULL, trials = 20,
-  max_iter = 4000, my_epsilon = 1e-06)
+grid_ITH_optim(
+  my_data,
+  my_purity,
+  list_eS,
+  pi_eps0 = NULL,
+  trials = 20,
+  max_iter = 4000,
+  my_epsilon = 1e-06
+)
 }
 \arguments{
-\item{list_eS}{A nested list of subclone configuration matrices}
-
-\item{trials}{Positive integer, number of random initializations of subclone proportions}
-
-\item{...}{Arguments passed on to \code{ITH_optim}
-\describe{
-  \item{my_data}{A R dataframe containing the following columns:
+\item{my_data}{A R dataframe containing the following columns:
 \describe{
 \item{\code{tAD}}{tumor alternate read counts}
 \item{\code{tRD}}{tumor reference read counts}
@@ -22,11 +23,18 @@ grid_ITH_optim(my_data, my_purity, list_eS, pi_eps0 = NULL, trials = 20,
 \item{\code{CN_2}}{major allele count, where \code{CN_1 <= CN_2}}
 \item{\code{tCN}}{\code{CN_1 + CN_2}}
 }}
-  \item{my_purity}{A single numeric value of known/estimated purity}
-  \item{pi_eps0}{A user-specified parameter denoting the proportion of loci not explained by the combinations of purity, copy number, multiplicity, and allocation. If \code{NULL}, it is initialized at 1e-3. If set to 0.0, the parameter is not estimated.}
-  \item{max_iter}{Positive integer, preferably 1000 or more, setting the maximum number of iterations}
-  \item{my_epsilon}{Convergence criterion threshold for changes in the log likelihood, preferably 1e-6 or smaller}
-}}
+
+\item{my_purity}{A single numeric value of known/estimated purity}
+
+\item{list_eS}{A nested list of subclone configuration matrices}
+
+\item{pi_eps0}{A user-specified parameter denoting the proportion of loci not explained by the combinations of purity, copy number, multiplicity, and allocation. If \code{NULL}, it is initialized at 1e-3. If set to 0.0, the parameter is not estimated.}
+
+\item{trials}{Positive integer, number of random initializations of subclone proportions}
+
+\item{max_iter}{Positive integer, preferably 1000 or more, setting the maximum number of iterations}
+
+\item{my_epsilon}{Convergence criterion threshold for changes in the log likelihood, preferably 1e-6 or smaller}
 }
 \value{
 A R list containing two objects. \code{GRID} is a dataframe where each row denotes a feasible subclone configuration with corresponding subclone proportion estimates \code{q} and somatic variant allocations \code{alloc}. \code{INFER} is a list where \code{INFER[[i]]} corresponds to the \code{i}-th row or model of \code{GRID}.
@@ -40,7 +48,7 @@ data(eS)
 set.seed(1); truth = gen_subj_truth(mat_eS = eS[[2]][[1]],maxLOCI = 100)
 truth[c("purity","q","eta")] # the underlying parameters
 obs_data = gen_ITH_RD(DATA = truth$subj_truth,RD = 200)
-obs_data = data.frame(obs_data,truth$subj_truth,stringsAsFactors=FALSE)
+obs_data = data.frame(obs_data,truth$subj_truth,stringsAsFactors = FALSE)
 opt_out = grid_ITH_optim(my_data = obs_data[,c("tAD","tRD","CN_1","CN_2","tCN")],
 	my_purity = truth$purity,list_eS = eS,trials = 50)
 opt_out$GRID

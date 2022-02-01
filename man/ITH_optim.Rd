@@ -4,8 +4,15 @@
 \alias{ITH_optim}
 \title{ITH_optim}
 \usage{
-ITH_optim(my_data, my_purity, init_eS, pi_eps0 = NULL, my_unc_q = NULL,
-  max_iter = 4000, my_epsilon = 1e-06)
+ITH_optim(
+  my_data,
+  my_purity,
+  init_eS,
+  pi_eps0 = NULL,
+  my_unc_q = NULL,
+  max_iter = 4000,
+  my_epsilon = 1e-06
+)
 }
 \arguments{
 \item{my_data}{A R dataframe containing the following columns:

@@ -6,6 +6,11 @@
 
 using namespace Rcpp;
 
+#ifdef RCPP_USE_GLOBAL_ROSTREAM
+Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
+Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
+#endif
+
 // Rcpp_ITH_opt
 Rcpp::List Rcpp_ITH_opt(const arma::mat& RD, const arma::vec& log_DP, const arma::vec& LBC, const arma::mat& BB, const arma::umat& uniq_BB, const arma::mat& uniq_CN_MA, const arma::mat& eS, const double& purity, const arma::vec& tCN, const double& pi_eps0, const arma::vec& pi0, const arma::vec& unc_qq0, const bool& mstep, const arma::uword& max_iter, const double& eps, const bool& show);
 RcppExport SEXP _SMASH_Rcpp_ITH_opt(SEXP RDSEXP, SEXP log_DPSEXP, SEXP LBCSEXP, SEXP BBSEXP, SEXP uniq_BBSEXP, SEXP uniq_CN_MASEXP, SEXP eSSEXP, SEXP puritySEXP, SEXP tCNSEXP, SEXP pi_eps0SEXP, SEXP pi0SEXP, SEXP unc_qq0SEXP, SEXP mstepSEXP, SEXP max_iterSEXP, SEXP epsSEXP, SEXP showSEXP) {

@@ -1,20 +1,19 @@
 Package: SMASH
 Type: Package
 Title: Subclone Multiplicity Allocation and Somatic Heterogeneity
-Version: 1.0
-Date: 2019-04-05
+Version: 1.0.0
+Date: 2022-02-01
 Author: Paul Little
-Maintainer: Paul Little <pllittle@email.unc.edu>
+Maintainer: Paul Little <plittle@fredhutch.org>
 Description: Cluster user-supplied somatic read counts 
-  with corresponding allele-specific copy number and 
-  tumor purity to infer feasible underlying intra-tumor 
-  heterogeneity in terms of number of subclones, 
-  multiplicity, and allocation.
-License: GPL-3 + file LICENSE
-Imports: Rcpp (>= 1.0.1),
-    RcppArmadillo
+	with corresponding allele-specific copy number and 
+	tumor purity to infer feasible underlying intra-tumor 
+	heterogeneity in terms of number of subclones, 
+	multiplicity, and allocation.
+License: GPL (>= 3)
+Imports: Rcpp, smartr
 LinkingTo: Rcpp, RcppArmadillo
 Encoding: UTF-8
 LazyData: true
 Depends: R (>= 2.10)
-RoxygenNote: 6.0.1
+RoxygenNote: 7.1.2
