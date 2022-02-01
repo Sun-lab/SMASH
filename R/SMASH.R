@@ -188,8 +188,8 @@ ITH_optim = function(my_data,my_purity,init_eS,pi_eps0=NULL,my_unc_q=NULL,max_it
 			|| !all(my_data$CN_2 == round(my_data$CN_2)) ){
 		stop("Alternate and reference read counts, total, minor, and major copy numbers should all be integers.")
 	}
-	if( my_purity <= 0 || my_purity >= 1 ){
-		stop("Tumor purity should be strictly between 0 and 1.")
+	if( my_purity <= 0 || my_purity > 1 ){
+		stop("Tumor purity should be strictly > 0 and <= 1.")
 	}
 	
   # Calculate some fixed values
