@@ -2,7 +2,7 @@ Package: SMASH
 Type: Package
 Title: Subclone Multiplicity Allocation and Somatic Heterogeneity
 Version: 1.0.0
-Date: 2022-02-01
+Date: 2022-03-04
 Author: Paul Little
 Maintainer: Paul Little <plittle@fredhutch.org>
 Description: Cluster user-supplied somatic read counts 
@@ -11,9 +11,11 @@ Description: Cluster user-supplied somatic read counts
 	heterogeneity in terms of number of subclones, 
 	multiplicity, and allocation.
 License: GPL (>= 3)
-Imports: Rcpp, smartr
+Imports: Rcpp, stats, smartr, reshape2, ggplot2
 LinkingTo: Rcpp, RcppArmadillo
 Encoding: UTF-8
 LazyData: true
 Depends: R (>= 2.10)
 RoxygenNote: 7.1.2
+Suggests: rmarkdown, knitr, devtools
+VignetteBuilder: knitr

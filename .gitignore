@@ -5,4 +5,5 @@ SMASH.Rproj
 .Rhistory
 *.o
 *.dll
+inst/doc
 

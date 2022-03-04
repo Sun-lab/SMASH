@@ -1,13 +1,7 @@
 #include <RcppArmadillo.h>
-#include <Rcpp.h>
-#include <cmath>
+// #include <cmath>
 
 // [[Rcpp::depends("RcppArmadillo")]]
-
-template<typename T>
-void printR_obj(const T& obj){
-	Rcpp::Rcout << obj << std::endl;	
-}
 
 // --------------------
 // Intermediate Functions

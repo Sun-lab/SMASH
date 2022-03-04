@@ -26,15 +26,25 @@ ITH_optim(
 
 \item{my_purity}{A single numeric value of known/estimated purity}
 
-\item{init_eS}{A subclone configuration matrix pre-defined in R list \code{eS}}
+\item{init_eS}{A subclone configuration matrix pre-defined in R 
+list \code{eS}}
 
-\item{pi_eps0}{A user-specified parameter denoting the proportion of loci not explained by the combinations of purity, copy number, multiplicity, and allocation. If \code{NULL}, it is initialized at 1e-3. If set to 0.0, the parameter is not estimated.}
+\item{pi_eps0}{A user-specified parameter denoting the proportion 
+of loci not explained by the combinations of purity, copy number, 
+multiplicity, and allocation. If \code{NULL}, it is initialized at 
+1e-3. If set to 0.0, the parameter is not estimated.}
 
-\item{my_unc_q}{An optimal initial vector for the unconstrained \code{q} vector, useful after running \code{grid_ITH_optim}. If this variable is \code{NULL}, then the subclone proportions, \code{q}, are randomly initialized. For instance, if \code{my_unc_q = ( x1 , x2 )}, then \code{q = ( exp(x1) / (1 + exp(x1) + exp(x2)) , exp(x2) / (1 + exp(x1) + exp(x2)) , 1 / (1 + exp(x1) + exp(x2))}.}
+\item{my_unc_q}{An optimal initial vector for the unconstrained 
+\code{q} vector, useful after running \code{grid_ITH_optim}. If 
+this variable is \code{NULL}, then the subclone proportions, 
+\code{q}, are randomly initialized. For instance, if 
+\code{my_unc_q = ( x1 , x2 )}, then \code{q = ( exp(x1) / (1 + exp(x1) + exp(x2)) , exp(x2) / (1 + exp(x1) + exp(x2)) , 1 / (1 + exp(x1) + exp(x2))}.}
 
-\item{max_iter}{Positive integer, preferably 1000 or more, setting the maximum number of iterations}
+\item{max_iter}{Positive integer, preferably 1000 or more, setting 
+the maximum number of iterations}
 
-\item{my_epsilon}{Convergence criterion threshold for changes in the log likelihood, preferably 1e-6 or smaller}
+\item{my_epsilon}{Convergence criterion threshold for changes in 
+the log likelihood, preferably 1e-6 or smaller}
 }
 \value{
 If the EM algorithm converges, the output will be a list containing
@@ -44,13 +54,17 @@ If the EM algorithm converges, the output will be a list containing
 \item{\code{unc_q0}}{initial unconstrained subclone proportions parameter}
 \item{\code{unc_q}}{unconstrained estimate of \code{q}}
 \item{\code{q}}{estimated subclone proportions among cancer cells}
-\item{\code{CN_MA_pi}}{estimated mixture probabilities of multiplicities and allocations given copy number states}
+\item{\code{CN_MA_pi}}{estimated mixture probabilities of multiplicities 
+and allocations given copy number states}
 \item{\code{eta}}{estimated subclone proportion among tumor cells}
 \item{\code{purity}}{user-inputted tumor purity}
 \item{\code{entropy}}{estimated entropy}
-\item{\code{infer}}{A R dataframe containing inferred variant allocations (\code{infer_A}), multiplicities (\code{infer_M}), cellular prevalences (\code{infer_CP}).}
+\item{\code{infer}}{A R dataframe containing inferred variant allocations 
+(\code{infer_A}), multiplicities (\code{infer_M}), cellular prevalences 
+(\code{infer_CP}).}
 \item{\code{ms}}{model size, number of parameters within parameter space}
-\item{\code{LL}}{The observed log likelihood evaluated at maximum likelihood estimates.}
+\item{\code{LL}}{The observed log likelihood evaluated at maximum likelihood 
+estimates.}
 \item{\code{AIC = 2 * LL - 2 * ms}}{Negative AIC, used for model selection}
 \item{\code{BIC = 2 * LL - ms * log(LOCI)}}{Negative BIC, used for model selection}
 \item{\code{LOCI}}{The number of inputted somatic variants.}

@@ -1,0 +1,482 @@
+---
+title: "Introduction"
+author: "Paul Little"
+date: "`r Sys.Date()`"
+header-includes:
+  - \usepackage{amsmath}
+  - \usepackage{amssymb}
+  - \usepackage{bm}
+output:
+  html_document:
+    theme: journal
+    highlight: tango
+    toc: true
+    toc_depth: 3
+    toc_float:
+      collapsed: yes
+      smooth_scroll: no
+    fig_width: 5
+vignette: >
+  %\VignetteIndexEntry{test}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+\def\T{\text{T}}
+\newcommand{\bf}[1]{\mathbf{#1}}
+\newcommand{\bcdot}[2]{\left. #1 \middle| #2 \right.}
+\newcommand{\bigCur}[1]{\left\{#1\right\}}
+
+```{r options,include = FALSE}
+rm(list = ls())
+
+knitr::opts_chunk$set(
+	collapse = TRUE,comment = "#>",
+	echo = TRUE,cache = FALSE,
+	dev = "png")
+
+# Fix seed
+set.seed(12)
+```
+
+# Software
+
+Assuming all software dependencies and **SMASH** are installed, we can begin.
+
+```{r setup,warning = FALSE}
+# Installation
+req_packs = c("devtools","ggplot2","smartr","SMASH")
+all_packs = as.character(installed.packages()[,1])
+
+for(pack in req_packs){
+  cat(sprintf("%s: Check package %s ...\n",date(),pack))
+  if( pack %in% all_packs ) next
+  
+  if( pack %in% c("devtools") ){
+    install.packages(pack)
+  } else if( pack %in% c("smartr") ){
+    devtools::install_github("pllittle/smartr")
+  } else if( pack %in% "SMASH" ){
+    devtools::install_github("Sun-lab/SMASH")
+  } else {
+    stop("Update installation code")
+  }
+  
+}
+
+for(pack in req_packs){
+  library(package = pack,character.only = TRUE)
+}
+
+# Load package
+library(SMASH)
+
+# List package's exported functions
+ls("package:SMASH")
+```
+
+# Introduction
+
+A biopsied tumor sample could contain one population or multiple subpopulations or **subclones** that is commonly referred to as **intra-tumor heterogeneity** or ITH for short. Each subclone is assumed to be characterized by the same somatically altered genomic profile. We will introduce several vocabulary used to characterize ITH.
+
+## Definitions
+
+Suppose we know that a tumor sample consists of DNA from three cancer subclones and DNA from normal cells. The **tumor purity** is the proportion of the tumor specimen that is cancerous and denoted by $\phi$. Let us refer to the three cancer subclones as $A$, $B$, and $C$ and they appear in that order. If we assume a tumor population originated from one parental subclone, each subclone descends from a single parental subclone, and that no subclone can disappear, then one of two scenarios could have occurred.
+
+1) $A \rightarrow B \rightarrow C$
+2) $A \rightarrow B$ and $A \rightarrow C$
+
+We can express these scenarios by **subclone configuration matrices** where columns read from left to right represent subclones and rows correspond to how mutations arise across subclones or each mutation's possible **allocation**. 
+
+For example in 1) we have
+
+$$
+\bf{S}_{3,1} \equiv \begin{bmatrix}
+1 & 1 & 1 \\
+0 & 1 & 1 \\
+0 & 0 & 1
+\end{bmatrix} = \begin{bmatrix}
+\bf{a}_{3,1,1}^\T \\
+\bf{a}_{3,1,2}^\T \\
+\bf{a}_{3,1,3}^\T
+\end{bmatrix}
+$$
+
+stored as `eS[[3]][[1]]` with value
+
+```{r}
+eS[[3]][[1]]
+```
+
+and in 2) we have
+
+$$
+\bf{S}_{3,2} = \begin{bmatrix}
+1 & 1 & 1 \\
+0 & 1 & 0 \\
+0 & 0 & 1
+\end{bmatrix} = \begin{bmatrix}
+\bf{a}_{3,2,1}^\T \\
+\bf{a}_{3,2,2}^\T \\
+\bf{a}_{3,2,3}^\T
+\end{bmatrix}
+$$
+
+stored as `eS[[3]][[2]]` with value
+
+```{r}
+eS[[3]][[2]]
+```
+
+* The first row of both matrices represents a mutation that occurs in the first subclone and is carried over into each descending subclone. These could be called **clonal** mutations or the mutations that appear throughout the cancer cells. 
+* The second row of scenario 1) is for mutations that arise in subclone $B$ and is carried over into or inherited by $C$. However the second row in scenario 2) shows that its mutations uniquely characterize subclone $B$.
+* Lastly, the third row of both scenarios represent mutations that uniquely characterize subclone $C$.
+
+Currently, the `SMASH` package has built-in subclone configuration matrices from one up to five subclones stored in the object `eS`. The biopsying of a tumor sample is similar to sampling a variety of colored marbles from an urn. Thus the tumor sample has unknown proportions for each subclone (denoted $\eta_A, \eta_B, \eta_C$) such that these **subclone proportions** sum up to the tumor purity $(\phi = \eta_A + \eta_B + \eta_C)$. 
+
+In general, let $\bf{\eta} = (\eta_1,\ldots,\eta_Q)^\T$ denote the tumor's subclone proportions for $Q$ subclones with $\phi = \sum_{q=1}^Q \eta_q$. Let $\bf{q} \equiv \frac{1}{\phi} \bf{\eta}$ correspond to the cancer's subclone proportions.
+
+## Copy Number
+
+Copy number aberations or CNAs is another component to characterizing tumor data and ITH. In normal cell DNA, we expect to have one allelic copy of maternal DNA and one allelic copy of paternal DNA and thus a genome-wide average total copy number or **ploidy** of two. In cancer DNA, short or long stretches of genome may undergo copy number change, resulting in unknown integer allelic copy numbers that deviate from the normal state. For `SMASH`, these integer copy number states need to be inferred by SNP array or next generation sequencing platforms and algorithmic pipelines. 
+
+A given genomic segment can be characterized by the underlying pair of allelic copy numbers. We simply refer to the minimum of the two as the **minor copy number** $(C_m)$ and the maximum of the two as the **major copy number** $(C_M)$ and the pairing is denoted $(C_m,C_M)$. The total copy number is denoted $C_T$ and defined as $C_T = C_m + C_M$.
+
+To simplify ITH characterization, we assume CNAs are clonal or that the copy number changes occurred in the first subclone and are carried over into all descending subclones. Somatic point mutations could occur in regions overlapping CNAs and thus a point mutation's copy number or **multiplicity**, denoted $m$, can vary as a function of when it occurs. 
+
+* If a point mutation occurs first (with $C_m = C_M = 1$) on one allele (has $m = 1$) and then the local region and same allele gains a duplicate copy ($C_m = 1, C_M = 2$), the somatic point mutation has $m = 2$.
+* However, if an allele undergoes copy number change first, and then a point mutation occurs, the point mutation has $m = 1$.
+* In general, $m \in \bigCur{1,C_m,C_M}$, depending on when the point mutation emerges.
+
+## Cellular prevalence
+
+Some investigators may be curious what proportion of cancer cells harbor at least one somatic mutation. We define this notion as **cellular prevalence** which combines a mutation's allocation with the cancer's subclone proportions to correct for sample to sample variability in tumor purity. Here are some examples:
+
+* If a mutation is clonal, the cellular prevalence is 
+$$
+\frac{\eta_A + \eta_B + \eta_C}{\phi} = \bf{a}_{3,1,1}^\T \bf{q} = \bf{a}_{3,2,1}^\T \bf{q} = 1.0.
+$$
+* If a mutation in scenario 1 occurred in the second row, the cellular prevalence is 
+$$
+\frac{\eta_B + \eta_C}{\phi} = \bf{a}_{3,1,2}^\T \bf{q}.
+$$
+
+* If a mutation in scenario 2 occurred in the second row, the cellular prevalence is 
+$$
+\frac{\eta_B}{\phi} = \bf{a}_{3,2,2}^\T \bf{q}.
+$$
+
+## Variant Allele Frequency
+
+The $b$-th point mutation is characterized by a pair of read counts that span the allele. The reads either harbor the reference allele or non-reference or alternate allele and thus we have reference and alternate read counts, respectively, and denoted as $R_{br}$ and $R_{ba}$. The **variant allele frequency** or VAF is the proportion of total read counts $(R_{ba} + R_{br})$ that harbor the alternate allele. 
+
+The expected VAF is a function of a $b$-th mutation's multiplicity $(m_b)$, allocation $(\bf{a}_b)$, subclone proportions, and overlapping allelic copy numbers $(C_{m,b},C_{M,b})$. The current `SMASH` model is
+
+$$
+\bcdot{R_{ba}}{R_{ba} + R_{br},p_b} \sim Binomial(R_a + R_r,p_b),
+$$
+
+where
+
+\begin{align}
+p_b &= \frac{m_b \bf{a}_b^\T \bf{\eta}}{(C_{m,b} + C_{M,b}) \phi + 2 (1-\phi)} \\
+&= \frac{m_b \phi \bf{a}_b^\T \bf{q}}{(C_{m,b} + C_{M,b}) \phi + 2 (1-\phi)}
+\end{align}
+
+# Simulation
+
+```{r echo = FALSE}
+maxLOCI = 50
+meanDP = 1e3
+nCN    = 3
+```
+
+The code below generates a R data.frame as input for `SMASH`. We have selected subclone configuration matrix `eS[[3]][[2]]` as the true tree structure with ```r maxLOCI``` mutated loci with overlaying copy number alterations and `r nCN` copy number pairings.
+
+```{r sim}
+sim = gen_subj_truth(
+  mat_eS = eS[[3]][[2]],
+  maxLOCI = maxLOCI,
+  nCN = nCN)
+class(sim)
+names(sim)
+```
+
+We can inspect the object's elements. `CN_1` and `CN_2` correspond to the minor and major allelic copy numbers, respectively.
+
+```{r}
+# Underlying true allocation, multiplicity, and cellular prevalence per point mutation
+dim(sim$subj_truth)
+sim$subj_truth[1:5,]
+
+# Combinations of allelic copy number, allocation, and multiplicity 
+#   with resulting mean VAFs (written as MAF) and cellular prevalences
+uniq_states = unique(sim$subj_truth[,
+  c("CN_1","CN_2","true_A","true_M","true_MAF","true_CP")])
+rownames(uniq_states) = NULL
+round(uniq_states,3)
+
+# Tumor purity
+sim$purity
+
+# Tumor subclone proportions
+sim$eta
+
+# Cancer subclone proportions
+sim$eta / sim$purity
+sim$q
+```
+
+Next we need to generate the corresponding read counts per mutation. We will set the mean total read depth to ```r meanDP```. Higher read depths result in narrow measurement of the VAF per mutation and can lead to improved ITH inference. In addition, more detected mutations and help improve clustering performance.
+
+```{r}
+mat_RD = gen_ITH_RD(DATA = sim$subj_truth,RD = meanDP)
+dim(mat_RD); mat_RD[1:5,]
+smart_hist(rowSums(mat_RD),breaks = 20,
+  xlab = "Total Depth",cex.lab = 1.5)
+
+# Combine copy number and read count information
+input = cbind(sim$subj_truth,mat_RD)
+
+# Calculate observed VAF
+input$VAF = input$tAD / rowSums(input[,c("tAD","tRD")])
+
+# Remove rows with no alternate depth
+input = input[which(input$tAD > 0),]
+dim(input)
+input[1:3,]
+```
+
+We can take a look at the observed VAF distribution and overlay the underlying expected VAF over all loci and by copy number pairing.
+
+```{r}
+# All loci
+smart_hist(input$VAF,breaks = 30,main = "All Loci",
+  xlab = "Observed VAF",cex.lab = 1.5)
+abline(v = unique(input$true_MAF),lty = 2,lwd = 2,col = "magenta")
+
+# Loci per copy number state
+uCN = unique(input[,c("CN_1","CN_2")])
+tmp_range = range(input$VAF)
+
+for(ii in seq(nrow(uCN))){
+  # ii = 3
+  idx = which(input$CN_1 == uCN$CN_1[ii] & input$CN_2 == uCN$CN_2[ii])
+  smart_hist(input$VAF[idx],breaks = 20,xlim = tmp_range,
+    main = sprintf("Loci with (CN_1,CN_2) = (%s,%s)",uCN$CN_1[ii],uCN$CN_2[ii]),
+    xlab = "Observed VAF",cex.lab = 1.5)
+  abline(v = unique(input$true_MAF[idx]),lty = 2,lwd = 2,col = "magenta")
+}
+```
+
+# Optimization
+
+SMASH assumes the true or estimate tumor purity is provided as well as each somatic point mutation's pair of overlapping allelic copy numbers.
+
+## Known configuration
+
+The code below will perform optimization for the true subclone configuration matrix. 
+
+Here we will set the mixture proportion for loci that do not fit any multiplicity and allocation combination to zero (forcing all loci to classify to a combination). In addition, we will initialize the subclone proportions to the truth.
+
+```{r know_config,fig.dim = c(5,5)}
+# Calculate true_unc_q, the unconstrained subclone proportions in cancer
+true_unc_q = log(sim$q[-length(sim$q)] / sim$q[length(sim$q)])
+true_unc_q
+
+# Optimize
+ith_out = ITH_optim(my_data = input,
+  my_purity = sim$purity,
+  pi_eps0 = 0,
+  my_unc_q = true_unc_q,
+  init_eS = eS[[3]][[2]])
+
+# Estimate of unclassified loci
+ith_out$pi_eps
+
+# Model fit BIC
+ith_out$BIC
+
+# Estimate of subclone proportions in cancer
+nSC = length(ith_out$q)
+tmp_df = smart_df(SC = as.character(rep(seq(nSC),2)),
+  CLASS = c(rep("Truth",nSC),rep("Estimate",nSC)),
+  VALUE = c(sim$q,ith_out$q))
+tmp_df
+
+ggplot(data = tmp_df,mapping = aes(x = SC,y = VALUE,fill = CLASS)) +
+  geom_bar(width = 0.5,stat = "identity",position = position_dodge()) +
+  xlab("Subclone") + ylab("Proportion in Cancer") +
+  theme(legend.position = "bottom",
+    text = element_text(size = 20))
+
+# Compare truth vs estimated/inferred
+
+## Variant Allele Frequency
+smoothScatter(input$true_MAF,ith_out$infer$infer_MAF,
+  main = "VAF",xlab = "Truth",ylab = "Inferred",cex.lab = 1.5)
+abline(a = 0,b = 1,lwd = 2,lty = 2,col = "red")
+
+smoothScatter(input$VAF,ith_out$infer$infer_MAF,
+  main = "VAF",xlab = "Observed",ylab = "Inferred",cex.lab = 1.5)
+abline(a = 0,b = 1,lwd = 2,lty = 2,col = "red")
+
+## Cellular prevalence
+smoothScatter(input$true_CP,
+  ith_out$infer$infer_CP,main = "Cellular Prevalence",
+  xlim = c(0,1),ylim = c(0,1),
+  xlab = "Truth",ylab = "Estimate",cex.lab = 1.5)
+abline(a = 0,b = 1,lwd = 2,lty = 2,col = "red")
+
+## Allocation
+smoothScatter(input$true_A,ith_out$infer$infer_A,
+  main = "Allocation",xlab = "Truth",ylab = "Inferred",
+  cex.lab = 1.5)
+abline(a = 0,b = 1,lwd = 2,lty = 2,col = "red")
+
+if( any(is.na(ith_out$infer$infer_A)) )
+  cat("Some loci couldn't classify\n")
+
+## Multiplicity
+smart_table(Truth = input$true_M,
+  Inferred = ith_out$infer$infer_M)
+```
+
+## Unknown configuration
+
+We may or may not have achieved the global optimal solution and underlying truth in the above section. Luckily `SMASH` provides a hands-off thorough grid search without any prior knowledge of the number of subclones, subclone configuration, subclone proportions, proportion of unclassified point mutations, etc. in the following code.
+
+```{r unknown_opt,R.options = list(width = 200),fig.dim = c(8,6)}
+grid_ith = grid_ITH_optim(
+  my_data = input,
+  my_purity = sim$purity,
+  list_eS = eS,
+  trials = 50,
+  max_iter = 4e3)
+names(grid_ith)
+
+# Grid of solutions
+grid_ith$GRID
+
+# Order solution(s) based on BIC (larger BIC correspond to better fits)
+gg = grid_ith$GRID
+gg = gg[order(-gg$BIC),]
+head(gg)
+
+# true cancer proportions
+sim$q
+
+# true entropy
+-sum(sim$q * log(sim$q))
+```
+
+From the grid of solutions (`grid_ith$GRID`), we can use AIC or BIC to score the model fit per solution. Sometimes the same configuration matrix can lead to multiple solutions. The column definitions are provided.
+
+* `cc` = the number of subclones
+* `kk` = the index for a configuration matrix given `cc` subclones
+* `ms` = the model size or number of parameters estimated
+* `entropy` = the negative dot product of the subclone proportions in cancer and their logarithm
+* `LL` = solution's maximum log-likelihood
+* `AIC` = Akaike information criterion
+* `BIC` = Bayesian information criterion
+* `q` = subclone proportions in cancer (rounded off to two decimal places)
+* `unc_q0` = unconstrained subclone proportions in cancer used to initialize the optimization, not the maximum likelihood estimates!
+* `alloc` = the number of new point mutations that characterize a subclone. 
+  * E.g. "1|16;2|28" means the 1st subclone is characterized 16 variants while the 2nd subclone inherited its parental variants and is characterized by 28 new variants.
+* `pi_eps` = the proportion of inputted mutations that failed to classify to an allocation and multiplicity
+
+We can calculate a posterior probability to compare and visualize model fits with the following formula:
+
+$$
+p_s = \frac{\exp(0.5 IC_s)}{\sum_{t=1}^T exp(0.5 IC_t)},
+$$
+
+where $IC_s$ corresponds to the $s$-th model's information criterion. The function `logSumExp` from package `smartr` will aid us here.
+
+```{r post,fig.dim = c(8,5)}
+pp = vis_GRID(GRID = grid_ith$GRID)
+print(pp)
+```
+
+The above figure provides a landscape of which solutions appear more favorable to others.
+
+# Downstream Applications
+
+Multiple metrics from `SMASH` output can be extracted. One could obtain ...
+
+* the optimal number of subclones,
+
+```{r}
+gg = grid_ith$GRID
+idx = which(gg$BIC == max(gg$BIC))
+gg[idx,]
+
+gg$cc[idx][1]
+```
+
+* the optimal entropies,
+
+```{r}
+opt_entropy = gg$entropy[idx]
+names(opt_entropy) = sprintf("Solution %s",idx)
+opt_entropy
+```
+
+* the optimal cancer subclone proportions,
+
+```{r}
+props = list()
+for(jj in seq(length(idx))){
+  opt_prop = gg$q[idx[jj]]
+  opt_prop = as.numeric(strsplit(opt_prop,",")[[1]])
+  names(opt_prop) = sprintf("SC%s",seq(length(opt_prop)))
+  props[[sprintf("Solution %s",idx[jj])]] = opt_prop
+}
+props
+```
+
+* the details per optimal solution and mutation (multiplicity, allocation, cellular prevalence),
+
+```{r}
+for(jj in seq(length(idx))){
+  cat(sprintf("Solution %s\n",idx[jj]))
+  print(head(grid_ith$INFER[[idx[jj]]]))
+}
+```
+
+* the frequency of optimal cellular prevalences and inferred allocations,
+
+```{r}
+opt_cps = list()
+for(jj in seq(length(idx))){
+  # jj = 1
+  tab = table(smart_digits(grid_ith$INFER[[idx[jj]]]$infer_CP,4),
+    grid_ith$INFER[[idx[jj]]]$infer_A)
+  rownames(tab) = sprintf("CP = %s",rownames(tab))
+  colnames(tab) = sprintf("ALLOC = %s",colnames(tab))
+  opt_cps[[sprintf("Solution %s",idx[jj])]] = tab
+}
+opt_cps
+```
+
+* the optimal allocation by subclone configuration matrices.
+
+```{r}
+opt = list()
+for(jj in seq(length(idx))){
+  # jj = 1
+  opt_cc = gg$cc[idx[jj]]
+  opt_kk = gg$kk[idx[jj]]
+  mat = eS[[opt_cc]][[opt_kk]]
+  dimnames(mat) = list(sprintf("ALLOC = %s",seq(opt_cc)),sprintf("SC%s",seq(opt_cc)))
+  opt[[sprintf("Solution %s",idx[jj])]] = mat
+}
+opt
+```
+
+# Session Info
+
+```{r sessInfo}
+sessionInfo()
+```
+

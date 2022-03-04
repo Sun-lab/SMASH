@@ -9,16 +9,12 @@ gen_ITH_RD(DATA, RD)
 \arguments{
 \item{DATA}{The output data.frame from \code{gen_subj_truth}}
 
-\item{RD}{A positive integer for the mean read depth generated from the negative binomial distribution}
+\item{RD}{A positive integer for the mean read depth generated from 
+the negative binomial distribution}
 }
 \value{
 A matrix of simulated alternate and reference read counts.
 }
 \description{
 Simulates observed alternate and reference read counts
-}
-\examples{
-data(eS)
-truth = gen_subj_truth(mat_eS = eS[[2]][[1]],maxLOCI = 100)
-gen_ITH_RD(DATA = truth$subj_truth,RD = 100)
 }
