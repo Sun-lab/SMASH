@@ -55,9 +55,10 @@ for(pack in req_packs){
   if( pack %in% c("devtools") ){
     install.packages(pack)
   } else if( pack %in% c("smartr") ){
-    devtools::install_github("pllittle/smartr")
+    devtools::install_github(repo = "pllittle/smartr")
   } else if( pack %in% "SMASH" ){
-    devtools::install_github("Sun-lab/SMASH")
+    devtools::install_github(repo = "Sun-lab/SMASH",
+    	build_vignettes = TRUE)
   } else {
     stop("Update installation code")
   }
