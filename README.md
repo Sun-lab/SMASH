@@ -6,7 +6,8 @@ This package is designed to cluster somatic mutations called from a tumor sample
 
 ```R
 library(devtools)
-install_github("Sun-lab/SMASH")
+install_github(repo = "Sun-lab/SMASH",
+	build_vignettes = TRUE)
 ```
 
 ## Vignette
