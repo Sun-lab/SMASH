@@ -44,33 +44,10 @@ set.seed(12)
 Assuming all software dependencies and **SMASH** are installed, we can begin.
 
 ```{r setup,warning = FALSE}
-# Installation
-req_packs = c("devtools","ggplot2","smartr","SMASH")
-all_packs = as.character(installed.packages()[,1])
-
-for(pack in req_packs){
-  cat(sprintf("%s: Check package %s ...\n",date(),pack))
-  if( pack %in% all_packs ) next
-  
-  if( pack %in% c("devtools") ){
-    install.packages(pack)
-  } else if( pack %in% c("smartr") ){
-    devtools::install_github(repo = "pllittle/smartr")
-  } else if( pack %in% "SMASH" ){
-    devtools::install_github(repo = "Sun-lab/SMASH",
-    	build_vignettes = TRUE)
-  } else {
-    stop("Update installation code")
-  }
-  
-}
-
+req_packs = c("devtools","ggplot2","smarter","SMASH")
 for(pack in req_packs){
   library(package = pack,character.only = TRUE)
 }
-
-# Load package
-library(SMASH)
 
 # List package's exported functions
 ls("package:SMASH")

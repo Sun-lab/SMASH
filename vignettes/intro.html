@@ -11,7 +11,7 @@
 
 <meta name="author" content="Paul Little" />
 
-<meta name="date" content="2022-03-04" />
+<meta name="date" content="2022-04-30" />
 
 <title>Introduction</title>
 
@@ -329,7 +329,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Introduction</h1>
 <h4 class="author">Paul Little</h4>
-<h4 class="date">2022-03-04</h4>
+<h4 class="date">2022-04-30</h4>
 
 </div>
 
@@ -337,43 +337,16 @@ div.tocify {
 <div id="software" class="section level1">
 <h1>Software</h1>
 <p>Assuming all software dependencies and <strong>SMASH</strong> are installed, we can begin.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Installation</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>req_packs <span class="ot">=</span> <span class="fu">c</span>(<span class="st">&quot;devtools&quot;</span>,<span class="st">&quot;reshape2&quot;</span>,<span class="st">&quot;ggplot2&quot;</span>,<span class="st">&quot;smartr&quot;</span>,<span class="st">&quot;SMASH&quot;</span>)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>all_packs <span class="ot">=</span> <span class="fu">as.character</span>(<span class="fu">installed.packages</span>()[,<span class="dv">1</span>])</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(pack <span class="cf">in</span> req_packs){</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">&quot;%s: Check package %s ...</span><span class="sc">\n</span><span class="st">&quot;</span>,<span class="fu">date</span>(),pack))</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>( pack <span class="sc">%in%</span> all_packs ) <span class="cf">next</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>( pack <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;devtools&quot;</span>) ){</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">install.packages</span>(pack)</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span>( pack <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;smartr&quot;</span>) ){</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;pllittle/smartr&quot;</span>)</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span>( pack <span class="sc">%in%</span> <span class="st">&quot;SMASH&quot;</span> ){</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;Sun-lab/SMASH&quot;</span>)</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&quot;Update installation code&quot;</span>)</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Fri Mar 04 16:06:11 2022: Check package devtools ...</span></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Fri Mar 04 16:06:11 2022: Check package reshape2 ...</span></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Fri Mar 04 16:06:11 2022: Check package ggplot2 ...</span></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Fri Mar 04 16:06:11 2022: Check package smartr ...</span></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Fri Mar 04 16:06:11 2022: Check package SMASH ...</span></span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(pack <span class="cf">in</span> req_packs){</span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(<span class="at">package =</span> pack,<span class="at">character.only =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Loading required package: usethis</span></span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="co"># Load package</span></span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(SMASH)</span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="co"># List package&#39;s exported functions</span></span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span>(<span class="st">&quot;package:SMASH&quot;</span>)</span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;eS&quot;             &quot;gen_ITH_RD&quot;     &quot;gen_subj_truth&quot; &quot;grid_ITH_optim&quot;</span></span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [5] &quot;ITH_optim&quot;      &quot;vis_GRID&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>req_packs <span class="ot">=</span> <span class="fu">c</span>(<span class="st">&quot;devtools&quot;</span>,<span class="st">&quot;ggplot2&quot;</span>,<span class="st">&quot;smarter&quot;</span>,<span class="st">&quot;SMASH&quot;</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(pack <span class="cf">in</span> req_packs){</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(<span class="at">package =</span> pack,<span class="at">character.only =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Loading required package: usethis</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># List package&#39;s exported functions</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span>(<span class="st">&quot;package:SMASH&quot;</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;eS&quot;             &quot;gen_ITH_RD&quot;     &quot;gen_subj_truth&quot; &quot;grid_ITH_optim&quot;</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [5] &quot;ITH_optim&quot;      &quot;vis_GRID&quot;</span></span></code></pre></div>
 </div>
 <div id="introduction" class="section level1">
 <h1>Introduction</h1>
@@ -846,7 +819,7 @@ p_s = \frac{\exp(0.5 IC_s)}{\sum_{t=1}^T exp(0.5 IC_t)},
 <span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5       2       1 0.22654845 1.0000000</span></span>
 <span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6       1       4 0.01670378 0.1307594</span></span></code></pre></div>
 <ul>
-<li>the optimal cellular prevalences and underlying allocation matrices,</li>
+<li>the frequency of optimal cellular prevalences and inferred allocations,</li>
 </ul>
 <div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>opt_cps <span class="ot">=</span> <span class="fu">list</span>()</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(jj <span class="cf">in</span> <span class="fu">seq</span>(<span class="fu">length</span>(idx))){</span>
@@ -920,28 +893,27 @@ p_s = \frac{\exp(0.5 IC_s)}{\sum_{t=1}^T exp(0.5 IC_t)},
 <span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
 <span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; other attached packages:</span></span>
-<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] SMASH_1.0.0    smartr_1.0.0   ggplot2_3.3.5  reshape2_1.4.4 devtools_2.4.3</span></span>
-<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [6] usethis_2.1.5 </span></span>
-<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
-<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [1] Rcpp_1.0.8         prettyunits_1.1.1  ps_1.6.0           gtools_3.9.2      </span></span>
-<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [5] assertthat_0.2.1   rprojroot_2.0.2    digest_0.6.29      utf8_1.2.2        </span></span>
-<span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [9] R6_2.5.1           plyr_1.8.6         evaluate_0.15      highr_0.9         </span></span>
-<span id="cb24-26"><a href="#cb24-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [13] pillar_1.7.0       gplots_3.1.1       rlang_1.0.2        rstudioapi_0.13   </span></span>
-<span id="cb24-27"><a href="#cb24-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [17] callr_3.7.0        jquerylib_0.1.4    rmarkdown_2.12     labeling_0.4.2    </span></span>
-<span id="cb24-28"><a href="#cb24-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [21] desc_1.4.0         stringr_1.4.0      RCurl_1.98-1.6     munsell_0.5.0     </span></span>
-<span id="cb24-29"><a href="#cb24-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [25] compiler_4.0.4     xfun_0.30          pkgconfig_2.0.3    pkgbuild_1.3.1    </span></span>
-<span id="cb24-30"><a href="#cb24-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [29] htmltools_0.5.2    tidyselect_1.1.2   tibble_3.1.6       fansi_1.0.2       </span></span>
-<span id="cb24-31"><a href="#cb24-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [33] crayon_1.5.0       dplyr_1.0.8        withr_2.5.0        bitops_1.0-7      </span></span>
-<span id="cb24-32"><a href="#cb24-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [37] brio_1.1.3         grid_4.0.4         jsonlite_1.8.0     gtable_0.3.0      </span></span>
-<span id="cb24-33"><a href="#cb24-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [41] lifecycle_1.0.1    DBI_1.1.2          magrittr_2.0.2     scales_1.1.1      </span></span>
-<span id="cb24-34"><a href="#cb24-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [45] KernSmooth_2.23-18 cli_3.2.0          stringi_1.7.6      cachem_1.0.6      </span></span>
-<span id="cb24-35"><a href="#cb24-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [49] farver_2.1.0       fs_1.5.2           remotes_2.4.2      testthat_3.1.2    </span></span>
-<span id="cb24-36"><a href="#cb24-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [53] bslib_0.3.1        ellipsis_0.3.2     generics_0.1.2     vctrs_0.3.8       </span></span>
-<span id="cb24-37"><a href="#cb24-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [57] tools_4.0.4        glue_1.6.2         purrr_0.3.4        processx_3.5.2    </span></span>
-<span id="cb24-38"><a href="#cb24-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [61] pkgload_1.2.4      fastmap_1.1.0      yaml_2.3.5         colorspace_2.0-3  </span></span>
-<span id="cb24-39"><a href="#cb24-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [65] caTools_1.18.2     sessioninfo_1.2.2  memoise_2.0.1      knitr_1.37        </span></span>
-<span id="cb24-40"><a href="#cb24-40" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [69] sass_0.4.0</span></span></code></pre></div>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] SMASH_1.0.0    smarter_1.0.0  ggplot2_3.3.5  devtools_2.4.3 usethis_2.1.5 </span></span>
+<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
+<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [1] Rcpp_1.0.8.3       prettyunits_1.1.1  ps_1.7.0           gtools_3.9.2      </span></span>
+<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [5] assertthat_0.2.1   rprojroot_2.0.3    digest_0.6.29      utf8_1.2.2        </span></span>
+<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [9] plyr_1.8.6         R6_2.5.1           evaluate_0.15      highr_0.9         </span></span>
+<span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [13] pillar_1.7.0       gplots_3.1.3       rlang_1.0.2        rstudioapi_0.13   </span></span>
+<span id="cb24-26"><a href="#cb24-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [17] callr_3.7.0        jquerylib_0.1.4    rmarkdown_2.13     labeling_0.4.2    </span></span>
+<span id="cb24-27"><a href="#cb24-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [21] desc_1.4.1         stringr_1.4.0      RCurl_1.98-1.6     munsell_0.5.0     </span></span>
+<span id="cb24-28"><a href="#cb24-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [25] compiler_4.0.4     xfun_0.30          pkgconfig_2.0.3    pkgbuild_1.3.1    </span></span>
+<span id="cb24-29"><a href="#cb24-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [29] htmltools_0.5.2    tidyselect_1.1.2   tibble_3.1.6       fansi_1.0.3       </span></span>
+<span id="cb24-30"><a href="#cb24-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [33] crayon_1.5.1       dplyr_1.0.8        withr_2.5.0        bitops_1.0-7      </span></span>
+<span id="cb24-31"><a href="#cb24-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [37] brio_1.1.3         grid_4.0.4         jsonlite_1.8.0     gtable_0.3.0      </span></span>
+<span id="cb24-32"><a href="#cb24-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [41] lifecycle_1.0.1    DBI_1.1.2          magrittr_2.0.3     scales_1.1.1      </span></span>
+<span id="cb24-33"><a href="#cb24-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [45] KernSmooth_2.23-18 cli_3.3.0          stringi_1.7.6      cachem_1.0.6      </span></span>
+<span id="cb24-34"><a href="#cb24-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [49] farver_2.1.0       reshape2_1.4.4     fs_1.5.2           remotes_2.4.2     </span></span>
+<span id="cb24-35"><a href="#cb24-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [53] testthat_3.1.4     bslib_0.3.1        ellipsis_0.3.2     generics_0.1.2    </span></span>
+<span id="cb24-36"><a href="#cb24-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [57] vctrs_0.4.1        tools_4.0.4        glue_1.6.2         purrr_0.3.4       </span></span>
+<span id="cb24-37"><a href="#cb24-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [61] processx_3.5.3     pkgload_1.2.4      fastmap_1.1.0      yaml_2.3.5        </span></span>
+<span id="cb24-38"><a href="#cb24-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [65] colorspace_2.0-3   caTools_1.18.2     sessioninfo_1.2.2  memoise_2.0.1     </span></span>
+<span id="cb24-39"><a href="#cb24-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [69] knitr_1.39         sass_0.4.0</span></span></code></pre></div>
 </div>
 
 

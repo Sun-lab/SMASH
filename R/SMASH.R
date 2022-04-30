@@ -500,7 +500,7 @@ vis_GRID = function(GRID){
 }
 
 #' @importFrom stats dgeom rbinom rnbinom runif
-#' @importFrom smartr smart_df logSumExp
+#' @importFrom smarter smart_df logSumExp
 #' @importFrom reshape2 melt
 #' @importFrom ggplot2 ggplot aes geom_line geom_point
 #'	scale_x_discrete guide_axis xlab ylab labs theme
@@ -517,11 +517,10 @@ NULL
 # devtools::document(pkg = pack_dir); usethis::use_gpl3_license()
 # Sys.setenv("RSTUDIO_PANDOC" = "C:/Program Files/RStudio/bin/pandoc")
 # check_pandoc = rmarkdown::pandoc_available(); check_pandoc
-#### usethis::use_vignette(name = "test",title = "Testing")
 # make_vign = check_pandoc && TRUE
-# devtools::check(pkg = pack_dir,manual = TRUE,cran = FALSE,error_on = c("warning","note")[2],vignettes = make_vign)
+# devtools::check(pkg = pack_dir,manual = TRUE,cran = TRUE,error_on = c("warning","note")[2],vignettes = make_vign)
 # devtools::install(pack_dir,build_vignettes = make_vign)
-
+# devtools::build(pkg = pack_dir,path = "C:/Users/Admin/Desktop/SMASH_1.0.0.tar.gz")
 
 ###
 

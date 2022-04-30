@@ -5,9 +5,44 @@ This package is designed to cluster somatic mutations called from a tumor sample
 ## Installation
 
 ```R
-library(devtools)
-install_github(repo = "Sun-lab/SMASH",
-	build_vignettes = TRUE)
+# Dependencies
+req_packs = c("Rcpp","RcppArmadillo","devtools",
+	"smarter","SMASH")
+all_packs = as.character(installed.packages()[,1])
+rerun = 0
+build_vign = ifelse(Sys.getenv("RSTUDIO_PANDOC") == "",FALSE,TRUE)
+
+for(pack in req_packs){
+	if( pack %in% all_packs ){
+		library(package = pack,character.only = TRUE)
+		next
+	}
+	
+	bb = NULL
+	
+	if( pack %in% "smarter" ){
+		bb = tryCatch(devtools::install_github("pllittle/smarter",
+			dependencies = TRUE),
+			error = function(ee){"error"})
+	} else if( pack %in% "SMASH" ){
+		bb = tryCatch(devtools::install_github("Sun-lab/SMASH",
+			build_vignettes = build_vign,
+			dependencies = TRUE),
+			error = function(ee){"error"})
+	} else {
+		bb = tryCatch(devtools::install.packages(pkgs = pack,
+			dependencies = TRUE),
+			error = function(ee){"error"})
+	}
+	
+	if( !is.null(bb) && bb == "error" )
+		stop(sprintf("Error for package = %s",pack))
+	rerun = 1
+
+}
+
+if( rerun == 1 ) stop("Re-run above code")
+
 ```
 
 ## Vignette
