@@ -1,8 +1,8 @@
 # SMASH - Subclone Multiplicity Allocation and Somatic Heterogeneity
 
 <!-- badges: start -->
-![C++](https://img.shields.io/badge/c++-%2300599C.svg?style=square&logo=c%2B%2B&logoColor=gold)
-![R](https://img.shields.io/badge/r-%23276DC3.svg?style=square&logo=r&logoColor=pink)
+![C++](https://img.shields.io/badge/C++-%2300599C.svg?style=square&logo=c%2B%2B&logoColor=gold)
+![R](https://img.shields.io/badge/R-%23276DC3.svg?style=square&logo=r&logoColor=pink)
 ![CRAN status](https://www.r-pkg.org/badges/version/SMASH)
 <!-- badges: end -->
 
