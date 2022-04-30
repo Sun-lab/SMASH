@@ -520,7 +520,8 @@ NULL
 # make_vign = check_pandoc && TRUE
 # devtools::check(pkg = pack_dir,manual = TRUE,cran = TRUE,error_on = c("warning","note")[2],vignettes = make_vign)
 # devtools::install(pack_dir,build_vignettes = make_vign)
-# devtools::build(pkg = pack_dir,path = "C:/Users/Admin/Desktop/SMASH_1.0.0.tar.gz")
+# bb = readLines("../DESCRIPTION"); vers = strsplit(bb[grepl("Version",bb)]," ")[[1]][2]; vers
+# devtools::build(pkg = pack_dir,path = sprintf("C:/Users/Admin/Desktop/%s_%s.tar.gz",pack,vers))
 
 ###
 
