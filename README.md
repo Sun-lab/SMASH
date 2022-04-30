@@ -10,7 +10,7 @@ This package is designed to cluster somatic mutations called from a tumor sample
 
 <p align="center">
 <img src="images/ith_configs.PNG" style="width=50%" />
-<em align="center">Visualizing subclone configurations.</em>
+<p align="center"><em>Visualizing subclone configurations.</em></p>
 </p>
 
 ## Installation
