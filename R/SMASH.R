@@ -509,19 +509,12 @@ vis_GRID = function(GRID){
 #' @useDynLib SMASH
 NULL
 
-# Steps to create/check/install package from directory
-# bb = strsplit(getwd(),"/")[[1]]; pack_dir = paste(bb[-length(bb)],collapse = "/")
-# pack = strsplit(pack_dir,"/")[[1]]; pack = pack[length(pack)]; pack
-# if( pack %in% installed.packages()[,1] ){ remove.packages(pack); q("no")}
-# Rcpp::compileAttributes(pkgdir = pack_dir)
-# devtools::document(pkg = pack_dir); usethis::use_gpl3_license()
-# Sys.setenv("RSTUDIO_PANDOC" = "C:/Program Files/RStudio/bin/pandoc")
-# check_pandoc = rmarkdown::pandoc_available(); check_pandoc
-# make_vign = check_pandoc && TRUE
-# devtools::check(pkg = pack_dir,manual = TRUE,cran = TRUE,error_on = c("warning","note")[2],vignettes = make_vign)
-# devtools::install(pack_dir,build_vignettes = make_vign)
-# bb = readLines("../DESCRIPTION"); vers = strsplit(bb[grepl("Version",bb)]," ")[[1]][2]; vers
-# devtools::build(pkg = pack_dir,path = sprintf("C:/Users/Admin/Desktop/%s_%s.tar.gz",pack,vers))
+# Create package
+# rm(list=ls()); library(smarter)
+# smart_prepPack(pack_dir = "C:/Users/Admin/Desktop/github/SMASH",
+#		pandoc = "C:/Program Files/RStudio/bin/pandoc",
+#		make_vign = TRUE,cran = FALSE,build_dir = "C:/Users/Admin/Desktop")
+
 
 ###
 

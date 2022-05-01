@@ -11,8 +11,7 @@ Description: Cluster user-supplied somatic read counts
 	heterogeneity in terms of number of subclones, 
 	multiplicity, and allocation.
 License: GPL (>= 3)
-Imports: Rcpp, stats, smarter, reshape2, ggplot2,
-	rmarkdown
+Imports: Rcpp, stats, smarter, reshape2, ggplot2
 LinkingTo: Rcpp, RcppArmadillo
 Encoding: UTF-8
 LazyData: true
