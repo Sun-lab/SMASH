@@ -17,44 +17,23 @@ This package is designed to cluster somatic mutations called from a tumor sample
 
 ## Installation
 
+Copy/paste the following code into RStudio for **SMASH** installation.
+
 ```R
-# Dependencies
-req_packs = c("Rcpp","RcppArmadillo","devtools",
-	"smarter","SMASH")
 all_packs = as.character(installed.packages()[,1])
-rerun = 0
-build_vign = ifelse(Sys.getenv("RSTUDIO_PANDOC") == "",FALSE,TRUE)
+pandoc = Sys.getenv("RSTUDIO_PANDOC")
+build_vign = !is.null(pandoc) && file.exists(pandoc)
 
-for(pack in req_packs){
-	if( pack %in% all_packs ){
-		library(package = pack,character.only = TRUE)
-		next
-	}
-	
-	bb = NULL
-	
-	if( pack %in% "smarter" ){
-		bb = tryCatch(devtools::install_github("pllittle/smarter",
-			dependencies = TRUE),
-			error = function(ee){"error"})
-	} else if( pack %in% "SMASH" ){
-		bb = tryCatch(devtools::install_github("Sun-lab/SMASH",
-			build_vignettes = build_vign,
-			dependencies = TRUE),
-			error = function(ee){"error"})
-	} else {
-		bb = tryCatch(devtools::install.packages(pkgs = pack,
-			dependencies = TRUE),
-			error = function(ee){"error"})
-	}
-	
-	if( !is.null(bb) && bb == "error" )
-		stop(sprintf("Error for package = %s",pack))
-	rerun = 1
-
+if( !("smarter" %in% all_packs) ){
+	stop("Check https://github.com/pllittle/smarter for installation")
 }
 
-if( rerun == 1 ) stop("Re-run above code")
+library(smarter)
+smarter::smart_packDeps(
+	cran_packs = c("Rcpp","RcppArmadillo","devtools"),
+	github_packs = c("Sun-lab/SMASH"),
+	pandoc = pandoc,
+	build_vign = build_vign)
 
 ```
 
