@@ -1,5 +1,5 @@
 <div align="left">
-<a href=""><img src="https://img.shields.io/badge/R-%23276DC3.svg?style=square&logo=r&logoColor=pink&label=SMASH" width="500" /></a>
+<a href=""><img src="https://img.shields.io/badge/R-%23276DC3.svg?style=square&logo=r&logoColor=pink&label=SMASH" height="100" /></a>
 </div>
 
 <!-- badges: start -->
