@@ -9,14 +9,32 @@
 [![DOI](https://zenodo.org/badge/DOI/10.1186/s13073-019-0643-9.svg)](https://doi.org/10.1186/s13073-019-0643-9)
 <!-- badges: end -->
 
-This package is designed to cluster somatic mutations called from a tumor sample with a matched normal sample. Each mutation is assumed to lie in a genomic segment of clonal copy number. Each mutation's inferred clonal copy number and the tumor purity estimate is required as input to successfully run the program. This information can be obtained by running algorithms such as ABSOLUTE or ASCAT that derive tumor purity and clonal copy number estimates from SNP Array intensities.
+## What is this for?
+
+<details>
+
+<summary>Click to expand!</summary>
+
+This package is designed to cluster somatic mutations called from a 
+tumor sample with a matched normal sample. Each mutation is assumed 
+to lie in a genomic segment of clonal copy number. Each mutation's 
+inferred clonal copy number and the tumor purity estimate is required 
+as input to successfully run the program. This information can be 
+obtained by running algorithms such as ABSOLUTE or ASCAT that derive 
+tumor purity and clonal copy number estimates from SNP Array intensities.
 
 <p align="center">
 <img src="images/ith_configs.PNG" width="50%" />
 <p align="center"><em>Visualizing subclone configurations.</em></p>
 </p>
 
+</details>
+
 ## Installation
+
+<details>
+
+<summary>Click to expand!</summary>
 
 Copy/paste the following code into RStudio for **SMASH** installation.
 
@@ -38,9 +56,13 @@ smarter::smart_packDeps(
 
 ```
 
+</details>
+
 ## Vignette
 
-To see the vignette, follow the code below. The vignette contains background knowledge and code to perform simulation, optimization, interpretation, and visualization.
+To see the vignette, follow the code below. The vignette contains background 
+knowledge and code to perform simulation, optimization, interpretation, 
+and visualization.
 
 ```R
 library(SMASH)
