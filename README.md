@@ -14,10 +14,6 @@
 
 ## What is this for?
 
-<details>
-
-<summary>Click to expand!</summary>
-
 This package is designed to cluster somatic mutations called from a 
 tumor sample with a matched normal sample. Each mutation is assumed 
 to lie in a genomic segment of clonal copy number. Each mutation's 
@@ -31,15 +27,13 @@ tumor purity and clonal copy number estimates from SNP Array intensities.
 <p align="center"><em>Visualizing subclone configurations.</em></p>
 </p>
 
-</details>
-
 ## Installation
 
 <details>
 
 <summary>Click to expand!</summary>
 
-Copy/paste the following code into RStudio for **SMASH** installation.
+Copy/paste the following code into R/RStudio for **SMASH** installation.
 
 ```R
 all_packs = as.character(installed.packages()[,1])
@@ -70,6 +64,22 @@ and visualization.
 ```R
 library(SMASH)
 vignette(package = "SMASH",topic = "intro")
+```
+
+## Workflow
+
+```mermaid
+flowchart LR
+
+%% Nodes and directions
+fasta{{reference.fasta}} & tbam{{tumor.bam}} & nbam{{normal.bam}} --> caller{{Variant Caller}}
+caller --> vcf{{somatic.vcf}}
+array{{SNP array}} --> cnaCall{{Copy Number Algorithm}}
+cnaCall & vcf --> SMASH
+
+%% Class definitions
+
+%% Assign classes to nodes
 ```
 
 ## Citation
