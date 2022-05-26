@@ -74,7 +74,7 @@ flowchart LR
 %% Nodes and directions
 fasta{{reference.fasta}} & tbam{{tumor.bam}} & nbam{{normal.bam}} --> caller{{Variant Caller}}
 caller --> vcf{{somatic.vcf}}
-array{{SNP array}} --> cnaCall{{Copy Number Algorithm}}
+array{{SNP array data}} --> cnaCall{{Copy Number Algorithm}}
 cnaCall --> cnaEst{{Purity, Allelic Copy Numbers}}
 cnaEst & vcf --> SMASH{{SMASH}}
 
@@ -92,7 +92,7 @@ class nbam myblue
 class array myyellow
 class fasta mygreen
 class caller,cnaCall,SMASH myorange
-class vcf mymagenta
+class vcf,cnaEst mymagenta
 ```
 
 ## Citation
