@@ -75,11 +75,24 @@ flowchart LR
 fasta{{reference.fasta}} & tbam{{tumor.bam}} & nbam{{normal.bam}} --> caller{{Variant Caller}}
 caller --> vcf{{somatic.vcf}}
 array{{SNP array}} --> cnaCall{{Copy Number Algorithm}}
-cnaCall & vcf --> SMASH
+cnaCall --> cnaEst{{Purity, Allelic Copy Numbers}}
+cnaEst & vcf --> SMASH{{SMASH}}
 
 %% Class definitions
+classDef myred fill:#f44336,stroke:#f3f6f4,stroke-width:2px
+classDef myblue fill:#19daf8,stroke:#f3f6f4,stroke-width:2px
+classDef mygreen fill:#79d50d,stroke:#f3f6f4,stroke-width:2px
+classDef mymagenta fill:#fc9ffc,stroke:#f3f6f4,stroke-width:2px
+classDef myyellow fill:#f6fa13,stroke:#f3f6f4,stroke-width:2px
+classDef myorange fill:#f89d3e,stroke:#f3f6f4,stroke-width:2px
 
 %% Assign classes to nodes
+class tbam myred
+class nbam myblue
+class array myyellow
+class fasta mygreen
+class caller,cnaCall,SMASH myorange
+class vcf mymagenta
 ```
 
 ## Citation
