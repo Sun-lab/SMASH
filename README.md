@@ -12,6 +12,16 @@
 [![](https://img.shields.io/github/last-commit/Sun-lab/SMASH.svg)](https://github.com/Sun-lab/SMASH/commits/master)
 <!-- badges: end -->
 
+## Table of Contents
+
+* [What is this for?](#what-is-this-for)
+* [Installation](#installation)
+* [Vignette](#vignette)
+* [Workflow](#workflow)
+* [Citation](#citation)
+* [Contact](#contact)
+* [FAQs](#faqs)
+
 ## What is this for?
 
 This package is designed to cluster somatic mutations called from a 
@@ -36,20 +46,26 @@ tumor purity and clonal copy number estimates from SNP Array intensities.
 Copy/paste the following code into R/RStudio for **SMASH** installation.
 
 ```R
-all_packs = as.character(installed.packages()[,1])
 pandoc = Sys.getenv("RSTUDIO_PANDOC")
-build_vign = !is.null(pandoc) && file.exists(pandoc)
 
-if( !("smarter" %in% all_packs) ){
-	stop("Check https://github.com/pllittle/smarter for installation")
+cran_packs = c("Rcpp","RcppArmadillo","devtools","smarter","SMASH")
+req_packs = c(cran_packs)
+
+for(pack in req_packs){
+	
+	chk_pack = tryCatch(find.package(pack),
+		error = function(ee){NULL})
+	
+	if( !is.null(chk_pack) ){
+		library(pack,character.only = TRUE)
+		next
+	}
+	
+	if( pack %in% cran_packs ){
+		install.packages(pack,dependencies = TRUE)
+	}
+	
 }
-
-library(smarter)
-smarter::smart_packDeps(
-	cran_packs = c("Rcpp","RcppArmadillo","devtools"),
-	github_packs = c("Sun-lab/SMASH"),
-	pandoc = pandoc,
-	build_vign = build_vign)
 
 ```
 
@@ -105,3 +121,8 @@ study of survival time. *Genome medicine,* 11(1), 1-15.
 [PDF](https://genomemedicine.biomedcentral.com/track/pdf/10.1186/s13073-019-0643-9.pdf), 
 [Supplement](https://static-content.springer.com/esm/art%3A10.1186%2Fs13073-019-0643-9/MediaObjects/13073_2019_643_MOESM1_ESM.pdf)]
 
+## Contact
+
+* [Feel free to reach out](mailto:pllittle321@gmail.com?subject=SMASH:%20Q%26A&body=Dear%20Dr.%20Little,%0A%0A%0A)
+
+## FAQs

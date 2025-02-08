@@ -340,17 +340,17 @@ grid_ITH_optim = function(my_data,my_purity,list_eS,pi_eps0 = NULL,
 	all_ck = c()
 	
 	for(cc in seq(length(list_eS))){
-		cat(sprintf("cc = %s; ",cc))
+		message(sprintf("cc = %s; ",cc),appendLF = FALSE)
 		tmp_ck0 = c()
 		tmp_infer0 = list() # new code
 	
 	for(kk in seq(length(list_eS[[cc]]))){
-		cat(sprintf("kk = %s ",kk))
+		message(sprintf("kk = %s ",kk),appendLF = FALSE)
 		tmp_ck = c()
 		tmp_infer = list() # new code
 		
 		for(count in seq(trials)){
-			if(count %% 5 == 0) cat("*")
+			if(count %% 5 == 0) message("*",appendLF = FALSE)
 			ith_out = list(converge = FALSE,BIC = -Inf)
 			
 			ith_out1 = ITH_optim(my_data = my_data,my_purity = my_purity,
@@ -385,7 +385,7 @@ grid_ITH_optim = function(my_data,my_purity,list_eS,pi_eps0 = NULL,
 			}
 			
 		}
-		cat(" ")
+		message(" ",appendLF = FALSE)
 		
 		if( !is.null(tmp_ck) && nrow(tmp_ck) > 0 ){
 			keep_idx = !duplicated(tmp_ck[,c("cc","kk","ms","entropy","LL")]) # new code
@@ -411,20 +411,20 @@ grid_ITH_optim = function(my_data,my_purity,list_eS,pi_eps0 = NULL,
 			}
 			
     }
-    cat("\n")
+    message("\n",appendLF = FALSE)
   }
 	# all_ck = all_ck[order(all_ck$cc,all_ck$kk,all_ck$ms),]
 	rownames(all_ck) = NULL
 	# all_ck
   
 	if(FALSE){ # Obtain details of inferred results
-		cat("Obtain inferred results: ")
+		message("Obtain inferred results: ",appendLF = FALSE)
 		thres = 0; num_res = nrow(all_ck)
 		infer_list = list()
 		for(ii in seq(num_res)){
 			
 			if( ii / num_res * 100 >= thres ){
-				cat(paste0(thres,"% "))
+				message(paste0(thres,"% "),appendLF = FALSE)
 				thres = thres + 5
 			}
 			
@@ -463,7 +463,7 @@ grid_ITH_optim = function(my_data,my_purity,list_eS,pi_eps0 = NULL,
 			infer_list[[ii]] = ith_out$infer
 			rm(ith_out)
 		}
-		cat("\n")
+		message("\n",appendLF = FALSE)
   }
 	
   return(list(GRID = all_ck,INFER = all_infer))
@@ -473,6 +473,7 @@ grid_ITH_optim = function(my_data,my_purity,list_eS,pi_eps0 = NULL,
 #' @title vis_GRID
 #' @description A simple visualization of SMASH's grid of solutions
 #' @param GRID The \code{GRID} object output from \code{grid_ITH_optim}.
+#' @return A ggplot object for data visualization
 #'
 #' @export
 vis_GRID = function(GRID){
@@ -508,12 +509,6 @@ vis_GRID = function(GRID){
 #' @importFrom Rcpp sourceCpp
 #' @useDynLib SMASH
 NULL
-
-# Create package
-# rm(list=ls()); library(smarter)
-# smart_prepPack(pack_dir = "C:/Users/Admin/Desktop/github/SMASH",
-#		pandoc = "C:/Program Files/RStudio/bin/pandoc",
-#		make_vign = TRUE,cran = FALSE,build_dir = "C:/Users/Admin/Desktop")
 
 
 ###

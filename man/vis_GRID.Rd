@@ -9,6 +9,9 @@ vis_GRID(GRID)
 \arguments{
 \item{GRID}{The \code{GRID} object output from \code{grid_ITH_optim}.}
 }
+\value{
+A ggplot object for data visualization
+}
 \description{
 A simple visualization of SMASH's grid of solutions
 }
