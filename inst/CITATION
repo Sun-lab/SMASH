@@ -1,0 +1,17 @@
+bibentry("Article",
+	title		= "Associating somatic mutations to clinical outcomes: a pan-cancer study of survival time",
+	author	= c(person("Paul","Little",
+								email = "pllittle321@gmail.com",
+								comment = c(ORCID = "0000-0002-9789-8501")),
+							person("Dan-Yu","Lin",
+								email = "lin@bios.unc.edu"),
+							person("Wei","Sun",
+								email = "wsun@fredhutch.org",
+								comment = c(ORCID = "0000-0002-6350-1107"))
+						),
+	journal	= "Genome Medicine",
+	year		= "2019",
+	volume	= "11",
+	number	= "1",
+	pages		= "1--15",
+	doi			= "10.1186/s13073-019-0643-9")
