@@ -2,6 +2,8 @@
 title: "Introduction"
 author: "Paul Little"
 date: "`r Sys.Date()`"
+bibliography: references.bib
+csl: apa.csl
 header-includes:
   - \usepackage{amsmath}
   - \usepackage{amssymb}
@@ -28,11 +30,9 @@ vignette: >
 \newcommand{\bigCur}[1]{\left\{#1\right\}}
 
 ```{r options,include = FALSE}
-rm(list = ls())
-
 knitr::opts_chunk$set(
 	collapse = TRUE,comment = "#>",
-	echo = TRUE,cache = FALSE,
+	echo = TRUE,cache = TRUE,
 	dev = "png")
 
 # Fix seed
@@ -41,7 +41,7 @@ set.seed(12)
 
 # Software
 
-Assuming all software dependencies and **SMASH** are installed, we can begin.
+Assuming all software dependencies and SMASH [@little2019associating] are installed, we can begin.
 
 ```{r setup,warning = FALSE}
 req_packs = c("devtools","ggplot2","smarter","SMASH")
@@ -457,4 +457,6 @@ opt
 ```{r sessInfo}
 sessionInfo()
 ```
+
+# References
 

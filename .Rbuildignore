@@ -2,3 +2,5 @@
 ^images$
 ^README\.md$
 ^debug$
+vignettes/*_cache
+vignettes/*_files
